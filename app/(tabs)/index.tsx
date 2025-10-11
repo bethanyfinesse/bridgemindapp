@@ -1,11 +1,9 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Image } from 'expo-image';
 import { Link } from 'expo-router';
+import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 export default function HomeScreen() {
   return (
@@ -17,9 +15,12 @@ export default function HomeScreen() {
           style={styles.reactLogo}
         />
       }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
+      <ThemedView style={styles.titleContainerLarge}>
+        <ThemedText type="title" style={styles.heroTitle}>Not Sure About Your Mood?</ThemedText>
+        <View style={styles.heroRow}>
+          <Image source={require('@/assets/images/icon.png')} style={styles.heroAvatar} />
+          <ThemedText type="subtitle">Hello Alex! How are you feeling today?</ThemedText>
+        </View>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
@@ -64,6 +65,51 @@ export default function HomeScreen() {
           {`Tap the Explore tab to learn more about what's included in this starter app.`}
         </ThemedText>
       </ThemedView>
+  <ThemedView style={styles.features}>
+        <ThemedText type="subtitle">Explore BridgeMind</ThemedText>
+
+        <Link href="/counselor">
+          <Link.Trigger>
+            <TouchableOpacity style={StyleSheet.flatten([styles.card, styles.cardPastelBlue])}>
+              <ThemedText type="defaultSemiBold" style={styles.cardTitle}>Counselor Match</ThemedText>
+              <ThemedText>Find culturally-aware counselors.</ThemedText>
+            </TouchableOpacity>
+          </Link.Trigger>
+        </Link>
+
+        <Link href="/find-friends">
+          <Link.Trigger>
+            <TouchableOpacity style={StyleSheet.flatten([styles.card, styles.cardPastelPeach])}>
+              <ThemedText type="defaultSemiBold" style={styles.cardTitle}>Find Friends</ThemedText>
+              <ThemedText>Connect with peers who share your background.</ThemedText>
+            </TouchableOpacity>
+          </Link.Trigger>
+        </Link>
+
+        <Link href="/community">
+          <Link.Trigger>
+            <TouchableOpacity style={StyleSheet.flatten([styles.card, styles.cardPastelGreen])}>
+              <ThemedText type="defaultSemiBold" style={styles.cardTitle}>Community Board</ThemedText>
+              <ThemedText>Share anonymously with others.</ThemedText>
+            </TouchableOpacity>
+          </Link.Trigger>
+        </Link>
+      </ThemedView>
+
+      <ThemedView style={styles.tilesRow}>
+        <View style={StyleSheet.flatten([styles.tile, styles.tileOrange])}>
+          <ThemedText type="subtitle">Sleep Duration</ThemedText>
+          <ThemedText>7h 20min</ThemedText>
+        </View>
+        <View style={StyleSheet.flatten([styles.tile, styles.tilePurple])}>
+          <ThemedText type="subtitle">Stress</ThemedText>
+          <ThemedText>High</ThemedText>
+        </View>
+        <View style={StyleSheet.flatten([styles.tile, styles.tileGreen])}>
+          <ThemedText type="subtitle">Mood</ThemedText>
+          <ThemedText>Happy</ThemedText>
+        </View>
+      </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
         <ThemedText>
@@ -95,4 +141,19 @@ const styles = StyleSheet.create({
     left: 0,
     position: 'absolute',
   },
+  features: { gap: 12, marginTop: 16 },
+  card: { padding: 16, borderRadius: 16, backgroundColor: 'rgba(0,0,0,0.04)', marginVertical: 8, shadowColor: '#000', shadowOpacity: 0.06, shadowRadius: 6, elevation: 2 },
+  cardTitle: { fontSize: 18, marginBottom: 6 },
+  cardPastelBlue: { backgroundColor: '#DCEFF6' },
+  cardPastelPeach: { backgroundColor: '#FDE7D6' },
+  cardPastelGreen: { backgroundColor: '#DFF3EA' },
+  titleContainerLarge: { gap: 12, marginBottom: 8 },
+  heroTitle: { fontSize: 28, lineHeight: 34 },
+  heroRow: { flexDirection: 'row', gap: 12, alignItems: 'center', marginTop: 8 },
+  heroAvatar: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#fff' },
+  tilesRow: { flexDirection: 'row', gap: 12, marginTop: 16 },
+  tile: { flex: 1, padding: 12, borderRadius: 12, alignItems: 'center' },
+  tileOrange: { backgroundColor: '#FFE6D1' },
+  tilePurple: { backgroundColor: '#F3E8FF' },
+  tileGreen: { backgroundColor: '#E7FAF0' },
 });
