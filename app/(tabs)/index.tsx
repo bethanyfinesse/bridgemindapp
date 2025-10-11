@@ -1,5 +1,5 @@
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import React, { useEffect } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
@@ -7,40 +7,79 @@ import { Animated, StyleSheet, View } from 'react-native';
 export default function HomeScreen() {
   const router = useRouter();
   const fadeAnim = new Animated.Value(0);
+  const scaleAnim = new Animated.Value(0.9);
 
   useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 800,
-      useNativeDriver: true,
-    }).start();
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+      Animated.spring(scaleAnim, {
+        toValue: 1,
+        tension: 50,
+        friction: 7,
+        useNativeDriver: true,
+      }),
+    ]).start();
 
     const timer = setTimeout(() => {
       router.push('/(tabs)/preferences');
-    }, 2000);
+    }, 2500);
 
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <ThemedView style={styles.container} lightColor="#fff" darkColor="#1a1a1a">
+    <LinearGradient
+      colors={['#FFE8DF', '#F5E8FF', '#E0F2F7']}
+      style={styles.container}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}>
       <Animated.View 
-        style={[styles.content, { opacity: fadeAnim }]}>
+        style={[
+          styles.content, 
+          { 
+            opacity: fadeAnim,
+            transform: [{ scale: scaleAnim }]
+          }
+        ]}>
+        
+        {/* Glass Logo Container */}
         <View style={styles.logoContainer}>
-          <View style={styles.logoCircle}>
-            <ThemedText style={styles.logoIcon}>❤️</ThemedText>
+          <View style={styles.glassCard}>
+            {/* Abstract Interwoven Circles */}
+            <View style={styles.logoDesign}>
+              <View style={[styles.circle, styles.circleTeal]} />
+              <View style={[styles.circle, styles.circleOrange]} />
+              <View style={[styles.circle, styles.circlePurple]} />
+              <View style={[styles.circle, styles.circleGreen]} />
+            </View>
           </View>
         </View>
         
-        <ThemedText style={styles.title} lightColor="#1a1a1a" darkColor="#fff">
-          BridgeMind
-        </ThemedText>
+        {/* Brand Name */}
+        <View style={styles.brandContainer}>
+          <ThemedText style={styles.brandText} lightColor="#2B6B7F" darkColor="#2B6B7F">
+            BridgeMind
+          </ThemedText>
+        </View>
         
-        <ThemedText style={styles.subtitle} lightColor="#666" darkColor="#999">
+        {/* Tagline */}
+        <ThemedText style={styles.tagline} lightColor="#6B7280" darkColor="#6B7280">
           Connecting cultures, healing hearts
         </ThemedText>
+
+        {/* Loading Dots */}
+        <View style={styles.dotsContainer}>
+          <View style={[styles.dot, styles.dotActive]} />
+          <View style={styles.dot} />
+          <View style={styles.dot} />
+          <View style={styles.dot} />
+        </View>
       </Animated.View>
-    </ThemedView>
+    </LinearGradient>
   );
 }
 
@@ -57,25 +96,78 @@ const styles = StyleSheet.create({
   logoContainer: {
     marginBottom: 40,
   },
-  logoCircle: {
-    width: 80,
-    height: 80,
-    borderRadius: 20,
-    backgroundColor: '#f5f5f5',
+  glassCard: {
+    width: 140,
+    height: 140,
+    borderRadius: 32,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.08,
+    shadowRadius: 24,
+    elevation: 8,
   },
-  logoIcon: {
-    fontSize: 40,
+  logoDesign: {
+    width: 80,
+    height: 80,
+    position: 'relative',
   },
-  title: {
-    fontSize: 32,
-    fontWeight: '700',
-    letterSpacing: -0.5,
+  circle: {
+    position: 'absolute',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 3,
+  },
+  circleTeal: {
+    borderColor: '#2B6B7F',
+    top: 0,
+    left: 10,
+  },
+  circleOrange: {
+    borderColor: '#D97941',
+    top: 10,
+    right: 0,
+  },
+  circlePurple: {
+    borderColor: '#8B7BA8',
+    bottom: 10,
+    left: 0,
+  },
+  circleGreen: {
+    borderColor: '#6BA587',
+    bottom: 0,
+    right: 10,
+  },
+  brandContainer: {
     marginBottom: 8,
   },
-  subtitle: {
+  brandText: {
+    fontSize: 32,
+    fontWeight: '600',
+    letterSpacing: -0.5,
+  },
+  tagline: {
     fontSize: 15,
     textAlign: 'center',
+    fontWeight: '400',
+  },
+  dotsContainer: {
+    flexDirection: 'row',
+    marginTop: 40,
+    gap: 8,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: 'rgba(107, 114, 128, 0.3)',
+  },
+  dotActive: {
+    backgroundColor: '#2B6B7F',
   },
 });

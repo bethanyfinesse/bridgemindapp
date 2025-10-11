@@ -1,53 +1,62 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * BridgeMind Color Theme
+ * Inspired by the interwoven logo design
  */
 
-import { Platform } from 'react-native';
-
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+export const BrandColors = {
+  // Primary brand colors from logo
+  teal: '#2B6B7F',
+  orange: '#D97941',
+  purple: '#8B7BA8',
+  green: '#6BA587',
+  cream: '#C9B991',
+  
+  // Extended palette for UI
+  tealLight: '#4A8A9E',
+  tealDark: '#1D4D5C',
+  orangeLight: '#E89964',
+  purpleLight: '#A594BD',
+  greenLight: '#85BFA1',
+  
+  // Neutral tones
+  lightBg: '#F8F9FA',
+  lightCard: '#FFFFFF',
+  lightText: '#2A2D35',
+  lightTextSecondary: '#6B7280',
+  lightBorder: '#E8ECF1',
+  
+  darkBg: '#1A1D23',
+  darkCard: '#252931',
+  darkText: '#F8F9FA',
+  darkTextSecondary: '#A8B2C1',
+  darkBorder: '#2A2D35',
+};
 
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+    text: BrandColors.lightText,
+    textSecondary: BrandColors.lightTextSecondary,
+    background: BrandColors.lightBg,
+    card: BrandColors.lightCard,
+    tint: BrandColors.teal,
+    accent: BrandColors.orange,
+    secondary: BrandColors.purple,
+    tertiary: BrandColors.green,
+    border: BrandColors.lightBorder,
+    tabIconDefault: '#A8B2C1',
+    tabIconSelected: BrandColors.teal,
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+    text: BrandColors.darkText,
+    textSecondary: BrandColors.darkTextSecondary,
+    background: BrandColors.darkBg,
+    card: BrandColors.darkCard,
+    tint: BrandColors.tealLight,
+    accent: BrandColors.orangeLight,
+    secondary: BrandColors.purpleLight,
+    tertiary: BrandColors.greenLight,
+    border: BrandColors.darkBorder,
+    tabIconDefault: '#6B7280',
+    tabIconSelected: BrandColors.tealLight,
   },
 };
-
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
-    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-  },
-});

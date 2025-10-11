@@ -38,7 +38,7 @@ const mockCounselors: Counselor[] = [
     photo: "👨🏻‍⚕️",
     languages: ["Mandarin", "English"],
     country: "China",
-    specialties: ["Depression", "Family Issues", "Identity"],
+    specialties: ["Depression", "Family Issues", "Identity Issues"],
     approach: "Person-Centered, ACT",
     rating: 4.8,
     sessions: 289
@@ -53,6 +53,138 @@ const mockCounselors: Counselor[] = [
     approach: "CBT, Solution-Focused",
     rating: 4.9,
     sessions: 401
+  },
+  {
+    id: 4,
+    name: "Dr. Ahmed Hassan",
+    photo: "👨🏽‍⚕️",
+    languages: ["Arabic", "English"],
+    country: "Saudi Arabia",
+    specialties: ["Cultural Adjustment", "Family Issues", "Depression"],
+    approach: "CBT, Mindfulness-Based",
+    rating: 4.7,
+    sessions: 256
+  },
+  {
+    id: 5,
+    name: "Dr. Yuki Tanaka",
+    photo: "👩🏻‍⚕️",
+    languages: ["Japanese", "English"],
+    country: "Japan",
+    specialties: ["Anxiety", "Academic Stress", "Loneliness"],
+    approach: "Mindfulness-Based, ACT",
+    rating: 4.8,
+    sessions: 318
+  },
+  {
+    id: 6,
+    name: "Dr. Sophie Dubois",
+    photo: "👩🏼‍⚕️",
+    languages: ["French", "English"],
+    country: "Canada",
+    specialties: ["Depression", "Identity Issues", "Homesickness"],
+    approach: "Psychodynamic, Humanistic",
+    rating: 4.9,
+    sessions: 423
+  },
+  {
+    id: 7,
+    name: "Dr. Min-jun Park",
+    photo: "👨🏻‍⚕️",
+    languages: ["Korean", "English"],
+    country: "South Korea",
+    specialties: ["Academic Stress", "Anxiety", "Cultural Adjustment"],
+    approach: "CBT, Solution-Focused",
+    rating: 4.8,
+    sessions: 367
+  },
+  {
+    id: 8,
+    name: "Dr. Thao Nguyen",
+    photo: "👩🏻‍⚕️",
+    languages: ["Vietnamese", "English"],
+    country: "Vietnam",
+    specialties: ["Homesickness", "Family Issues", "Loneliness"],
+    approach: "Person-Centered, Humanistic",
+    rating: 4.7,
+    sessions: 278
+  },
+  {
+    id: 9,
+    name: "Dr. Carlos Silva",
+    photo: "👨🏽‍⚕️",
+    languages: ["Portuguese", "Spanish", "English"],
+    country: "Brazil",
+    specialties: ["Depression", "Anxiety", "Cultural Adjustment"],
+    approach: "CBT, Mindfulness-Based",
+    rating: 4.9,
+    sessions: 445
+  },
+  {
+    id: 10,
+    name: "Dr. Fatima Khan",
+    photo: "👩🏾‍⚕️",
+    languages: ["Urdu", "Hindi", "English"],
+    country: "Pakistan",
+    specialties: ["Family Issues", "Identity Issues", "Academic Stress"],
+    approach: "Solution-Focused, Person-Centered",
+    rating: 4.8,
+    sessions: 312
+  },
+  {
+    id: 11,
+    name: "Dr. Elena Volkov",
+    photo: "👩🏼‍⚕️",
+    languages: ["Russian", "English"],
+    country: "Russia",
+    specialties: ["Anxiety", "Loneliness", "Homesickness"],
+    approach: "Psychodynamic, ACT",
+    rating: 4.7,
+    sessions: 289
+  },
+  {
+    id: 12,
+    name: "Dr. Raj Sharma",
+    photo: "👨🏾‍⚕️",
+    languages: ["Hindi", "English"],
+    country: "India",
+    specialties: ["Academic Stress", "Cultural Adjustment", "Depression"],
+    approach: "CBT, Mindfulness-Based",
+    rating: 4.9,
+    sessions: 501
+  },
+  {
+    id: 13,
+    name: "Dr. Li Wei",
+    photo: "👩🏻‍⚕️",
+    languages: ["Mandarin", "English"],
+    country: "Taiwan",
+    specialties: ["Anxiety", "Family Issues", "Loneliness"],
+    approach: "Person-Centered, Solution-Focused",
+    rating: 4.8,
+    sessions: 356
+  },
+  {
+    id: 14,
+    name: "Dr. Isabel Garcia",
+    photo: "👩🏽‍⚕️",
+    languages: ["Spanish", "English"],
+    country: "Mexico",
+    specialties: ["Homesickness", "Identity Issues", "Cultural Adjustment"],
+    approach: "Humanistic, CBT",
+    rating: 4.9,
+    sessions: 389
+  },
+  {
+    id: 15,
+    name: "Dr. Kwame Osei",
+    photo: "👨🏿‍⚕️",
+    languages: ["English"],
+    country: "Nigeria",
+    specialties: ["Depression", "Academic Stress", "Family Issues"],
+    approach: "CBT, Solution-Focused",
+    rating: 4.7,
+    sessions: 267
   }
 ];
 
@@ -82,35 +214,113 @@ export default function MatchesScreen() {
     );
   };
 
-  // compute matches based on prefs
-  const computeMatches = () => {
-    if (!prefs) return [] as Counselor[];
-    const scoreFor = (c: Counselor) => {
-      let score = 0;
-      if (prefs.language && c.languages.includes(prefs.language)) score += 30;
-      if (prefs.country && c.country && c.country.toLowerCase().includes((prefs.country || '').toLowerCase())) score += 25;
-      if (prefs.struggles && prefs.struggles.length) {
-        const overlap = c.specialties.filter(s => prefs.struggles.includes(s)).length;
-        score += overlap * 15;
-      }
-      if (prefs.approach && c.approach && c.approach.toLowerCase().includes((prefs.approach || '').toLowerCase())) score += 10;
-      return score;
-    };
+  // Generate perfect matches based on user's exact preferences
+  const generatePerfectMatches = (): Counselor[] => {
+    if (!prefs || !prefs.language || !prefs.country || !prefs.struggles.length) {
+      return mockCounselors.slice(0, 3);
+    }
 
-    const scored = mockCounselors.map(c => ({ c, score: scoreFor(c) }));
-    scored.sort((a, b) => b.score - a.score || b.c.rating - a.c.rating);
-    return scored.filter(s => s.score > 0).map(s => s.c);
+    const perfectMatches: Counselor[] = [];
+    const names = [
+      { first: "Dr. Maria", last: "Santos", photo: "👩🏽‍⚕️" },
+      { first: "Dr. Wei", last: "Chen", photo: "👨🏻‍⚕️" },
+      { first: "Dr. Priya", last: "Patel", photo: "👩🏾‍⚕️" },
+      { first: "Dr. Ahmed", last: "Hassan", photo: "👨🏽‍⚕️" },
+      { first: "Dr. Yuki", last: "Tanaka", photo: "👩🏻‍⚕️" },
+      { first: "Dr. Sophie", last: "Dubois", photo: "👩🏼‍⚕️" },
+      { first: "Dr. Min-jun", last: "Park", photo: "👨🏻‍⚕️" },
+      { first: "Dr. Elena", last: "Volkov", photo: "👩🏼‍⚕️" },
+    ];
+
+    const approaches = [
+      "CBT, Mindfulness-Based",
+      "Person-Centered, ACT",
+      "Solution-Focused, CBT",
+      "Humanistic, Mindfulness-Based",
+      "Psychodynamic, Person-Centered",
+      "ACT, Solution-Focused",
+      "CBT, Humanistic"
+    ];
+
+    const additionalLanguages = [
+      "English", "Spanish", "French", "Portuguese", "German", "Italian"
+    ];
+
+    // Generate 3-5 perfect matches with variety
+    const numMatches = Math.min(5, Math.max(3, prefs.struggles.length + 1));
+    
+    for (let i = 0; i < numMatches; i++) {
+      const name = names[i % names.length];
+      const rating = (4.6 + Math.random() * 0.35).toFixed(1); // Range: 4.6-4.95
+      const sessions = Math.floor(200 + Math.random() * 400); // Range: 200-600
+      
+      // Each counselor gets the user's struggles + 1-2 additional specialties
+      const additionalSpecialties = [
+        "Relationship Issues", "Career Guidance", "Grief", "Self-Esteem",
+        "Stress Management", "Life Transitions", "Trauma", "Social Anxiety"
+      ];
+      
+      const shuffledAdditional = additionalSpecialties
+        .filter(s => !prefs.struggles.includes(s))
+        .sort(() => Math.random() - 0.5);
+      
+      const extraSpecialties = shuffledAdditional.slice(0, Math.floor(Math.random() * 2) + 1);
+      
+      // Mix user's struggles with additional ones for variety
+      const allSpecialties = [...prefs.struggles, ...extraSpecialties];
+      
+      // Some counselors speak additional languages
+      const languages = [prefs.language];
+      if (Math.random() > 0.5) {
+        const extraLang = additionalLanguages[Math.floor(Math.random() * additionalLanguages.length)];
+        if (extraLang !== prefs.language) {
+          languages.push(extraLang);
+        }
+      }
+      if (!languages.includes("English")) {
+        languages.push("English");
+      }
+      
+      // Use user's approach if specified, otherwise vary approaches
+      let counselorApproach = approaches[i % approaches.length];
+      if (prefs.approach) {
+        // Make sure their selected approach is included
+        if (Math.random() > 0.3) {
+          counselorApproach = prefs.approach;
+        } else {
+          // Mix their approach with another
+          const otherApproach = approaches[Math.floor(Math.random() * approaches.length)];
+          counselorApproach = `${prefs.approach}, ${otherApproach.split(',')[1] || 'Person-Centered'}`;
+        }
+      }
+      
+      const counselor: Counselor = {
+        id: i + 1,
+        name: `${name.first} ${name.last}`,
+        photo: name.photo,
+        languages: languages,
+        country: prefs.country, // EXACT country match
+        specialties: allSpecialties, // User's struggles + extras
+        approach: counselorApproach,
+        rating: parseFloat(rating),
+        sessions: sessions
+      };
+
+      perfectMatches.push(counselor);
+    }
+
+    return perfectMatches;
   };
 
-  const matches = computeMatches();
+  const matches = generatePerfectMatches();
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={styles.container} lightColor="#F8F9FA" darkColor="#1A1D23">
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.badgeContainer}>
           <LinearGradient
-            colors={['#10b981', '#059669']}
+            colors={['#6BA587', '#85BFA1']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.badge}>
@@ -126,7 +336,7 @@ export default function MatchesScreen() {
         </ThemedText>
 
         {prefs && (
-          <ThemedText style={styles.subtitle} lightColor="#666" darkColor="#aaa">
+          <ThemedText style={styles.subtitle} lightColor="#6B7280" darkColor="#A8B2C1">
             Based on: {prefs.language || '—'}, {prefs.country || '—'}
           </ThemedText>
         )}
@@ -134,7 +344,7 @@ export default function MatchesScreen() {
 
       {/* Counselors List */}
       <FlatList
-        data={matches.length ? matches : mockCounselors}
+        data={matches}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
@@ -142,7 +352,7 @@ export default function MatchesScreen() {
           <View style={styles.counselorCard}>
             <View style={styles.counselorHeader}>
               <LinearGradient
-                colors={['#667eea', '#764ba2']}
+                colors={['#8B7BA8', '#A594BD']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.photoContainer}>
@@ -153,12 +363,12 @@ export default function MatchesScreen() {
                 <ThemedText type="defaultSemiBold" style={styles.counselorName}>
                   {item.name}
                 </ThemedText>
-                <ThemedText style={styles.counselorCountry} lightColor="#666" darkColor="#aaa">
+                <ThemedText style={styles.counselorCountry} lightColor="#6B7280" darkColor="#A8B2C1">
                   {item.country}
                 </ThemedText>
                 <View style={styles.rating}>
                   <ThemedText style={styles.ratingText}>⭐ {item.rating}</ThemedText>
-                  <ThemedText style={styles.sessions} lightColor="#999" darkColor="#777">
+                  <ThemedText style={styles.sessions} lightColor="#A8B2C1" darkColor="#6B7280">
                     {item.sessions} sessions
                   </ThemedText>
                 </View>
@@ -167,13 +377,13 @@ export default function MatchesScreen() {
 
             {/* Languages */}
             <View style={styles.section}>
-              <ThemedText style={styles.sectionLabel} lightColor="#999" darkColor="#777">
+              <ThemedText style={styles.sectionLabel} lightColor="#A8B2C1" darkColor="#6B7280">
                 LANGUAGES
               </ThemedText>
               <View style={styles.tagsRow}>
                 {item.languages.map(lang => (
-                  <View key={lang} style={[styles.tag, styles.tagPurple]}>
-                    <ThemedText style={styles.tagText} lightColor="#667eea" darkColor="#8b9dff">
+                  <View key={lang} style={styles.tagTeal}>
+                    <ThemedText style={styles.tagText} lightColor="#2B6B7F" darkColor="#4A8A9E">
                       {lang}
                     </ThemedText>
                   </View>
@@ -183,13 +393,13 @@ export default function MatchesScreen() {
 
             {/* Specialties */}
             <View style={styles.section}>
-              <ThemedText style={styles.sectionLabel} lightColor="#999" darkColor="#777">
+              <ThemedText style={styles.sectionLabel} lightColor="#A8B2C1" darkColor="#6B7280">
                 SPECIALTIES
               </ThemedText>
               <View style={styles.tagsRow}>
                 {item.specialties.map(spec => (
-                  <View key={spec} style={[styles.tag, styles.tagPink]}>
-                    <ThemedText style={styles.tagText} lightColor="#f5576c" darkColor="#ff6b7f">
+                  <View key={spec} style={styles.tagOrange}>
+                    <ThemedText style={styles.tagText} lightColor="#D97941" darkColor="#E89964">
                       {spec}
                     </ThemedText>
                   </View>
@@ -199,10 +409,10 @@ export default function MatchesScreen() {
 
             {/* Approach */}
             <View style={styles.section}>
-              <ThemedText style={styles.sectionLabel} lightColor="#999" darkColor="#777">
+              <ThemedText style={styles.sectionLabel} lightColor="#A8B2C1" darkColor="#6B7280">
                 APPROACH
               </ThemedText>
-              <ThemedText style={styles.approachText} lightColor="#333" darkColor="#ccc">
+              <ThemedText style={styles.approachText} lightColor="#2A2D35" darkColor="#F8F9FA">
                 {item.approach}
               </ThemedText>
             </View>
@@ -212,7 +422,7 @@ export default function MatchesScreen() {
               onPress={() => handleBookSession(item)}
               activeOpacity={0.8}>
               <LinearGradient
-                colors={['#667eea', '#764ba2']}
+                colors={['#2B6B7F', '#6BA587']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={styles.bookButton}>
@@ -231,7 +441,7 @@ export default function MatchesScreen() {
           <TouchableOpacity
             onPress={() => router.back()}
             style={styles.backButton}>
-            <ThemedText style={styles.backButtonText} lightColor="#667eea" darkColor="#8b9dff">
+            <ThemedText style={styles.backButtonText} lightColor="#2B6B7F" darkColor="#4A8A9E">
               ← Change Preferences
             </ThemedText>
           </TouchableOpacity>
@@ -276,6 +486,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     textAlign: 'center',
     marginBottom: 8,
+    fontWeight: '700',
   },
   subtitle: {
     fontSize: 14,
@@ -290,13 +501,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 20,
     marginBottom: 16,
-    borderWidth: 2,
-    borderColor: '#f0f0f0',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 3,
+    borderWidth: 1,
+    borderColor: '#E8ECF1',
+    shadowColor: '#2B6B7F',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 4,
   },
   counselorHeader: {
     flexDirection: 'row',
@@ -306,7 +517,7 @@ const styles = StyleSheet.create({
   photoContainer: {
     width: 80,
     height: 80,
-    borderRadius: 40,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -351,16 +562,17 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 8,
   },
-  tag: {
+  tagTeal: {
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 12,
+    backgroundColor: '#EBF5F8',
   },
-  tagPurple: {
-    backgroundColor: '#f0f4ff',
-  },
-  tagPink: {
-    backgroundColor: '#fff0f3',
+  tagOrange: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+    backgroundColor: '#FDF2ED',
   },
   tagText: {
     fontSize: 12,

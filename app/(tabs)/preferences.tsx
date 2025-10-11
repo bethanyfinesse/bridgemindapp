@@ -46,7 +46,7 @@ function PickerModal({ visible, onClose, options, selected, onSelect, title }: P
           <View style={styles.pickerHeader}>
             <ThemedText type="defaultSemiBold" style={styles.pickerTitle}>{title}</ThemedText>
             <TouchableOpacity onPress={onClose}>
-              <ThemedText style={styles.pickerClose} lightColor="#667eea" darkColor="#8b9dff">Done</ThemedText>
+              <ThemedText style={styles.pickerClose} lightColor="#2B6B7F" darkColor="#4A8A9E">Done</ThemedText>
             </TouchableOpacity>
           </View>
           <FlatList
@@ -61,8 +61,8 @@ function PickerModal({ visible, onClose, options, selected, onSelect, title }: P
                 style={styles.pickerOption}>
                 <ThemedText 
                   style={[styles.pickerOptionText, selected === item && styles.pickerOptionSelected]}
-                  lightColor={selected === item ? '#667eea' : '#333'}
-                  darkColor={selected === item ? '#8b9dff' : '#ccc'}>
+                  lightColor={selected === item ? '#2B6B7F' : '#2A2D35'}
+                  darkColor={selected === item ? '#4A8A9E' : '#F8F9FA'}>
                   {item}
                 </ThemedText>
                 {selected === item && <ThemedText>✓</ThemedText>}
@@ -112,7 +112,7 @@ export default function PreferencesScreen() {
   const isValid = prefs.language && prefs.country && prefs.struggles.length > 0;
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={styles.container} lightColor="#F8F9FA" darkColor="#1A1D23">
       <ScrollView 
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}>
@@ -120,7 +120,7 @@ export default function PreferencesScreen() {
         {/* Header */}
         <View style={styles.header}>
           <LinearGradient
-            colors={['#667eea', '#764ba2']}
+            colors={['#2B6B7F', '#6BA587']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.headerIcon}>
@@ -129,7 +129,7 @@ export default function PreferencesScreen() {
           <ThemedText type="title" style={styles.title}>
             Welcome to BridgeMind
           </ThemedText>
-          <ThemedText style={styles.subtitle} lightColor="#666" darkColor="#aaa">
+          <ThemedText style={styles.subtitle} lightColor="#6B7280" darkColor="#A8B2C1">
             Let's find the perfect counselor for you
           </ThemedText>
         </View>
@@ -144,11 +144,11 @@ export default function PreferencesScreen() {
             style={styles.selectButton}>
             <ThemedText 
               style={styles.selectButtonText}
-              lightColor={prefs.language ? '#333' : '#999'}
-              darkColor={prefs.language ? '#ccc' : '#777'}>
+              lightColor={prefs.language ? '#2A2D35' : '#A8B2C1'}
+              darkColor={prefs.language ? '#F8F9FA' : '#6B7280'}>
               {prefs.language || 'Select a language'}
             </ThemedText>
-            <ThemedText lightColor="#999" darkColor="#777">▼</ThemedText>
+            <ThemedText lightColor="#A8B2C1" darkColor="#6B7280">▼</ThemedText>
           </TouchableOpacity>
         </View>
 
@@ -162,11 +162,11 @@ export default function PreferencesScreen() {
             style={styles.selectButton}>
             <ThemedText 
               style={styles.selectButtonText}
-              lightColor={prefs.country ? '#333' : '#999'}
-              darkColor={prefs.country ? '#ccc' : '#777'}>
+              lightColor={prefs.country ? '#2A2D35' : '#A8B2C1'}
+              darkColor={prefs.country ? '#F8F9FA' : '#6B7280'}>
               {prefs.country || 'Select your country'}
             </ThemedText>
-            <ThemedText lightColor="#999" darkColor="#777">▼</ThemedText>
+            <ThemedText lightColor="#A8B2C1" darkColor="#6B7280">▼</ThemedText>
           </TouchableOpacity>
         </View>
 
@@ -183,15 +183,15 @@ export default function PreferencesScreen() {
                 activeOpacity={0.7}>
                 <LinearGradient
                   colors={prefs.struggles.includes(struggle) 
-                    ? ['#667eea', '#764ba2'] 
-                    : ['#f5f5f5', '#f5f5f5']}
+                    ? ['#8B7BA8', '#A594BD'] 
+                    : ['#F8F9FA', '#F8F9FA']}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 0 }}
                   style={styles.tag}>
                   <ThemedText 
                     style={styles.tagText}
-                    lightColor={prefs.struggles.includes(struggle) ? '#fff' : '#666'}
-                    darkColor={prefs.struggles.includes(struggle) ? '#fff' : '#aaa'}>
+                    lightColor={prefs.struggles.includes(struggle) ? '#fff' : '#6B7280'}
+                    darkColor={prefs.struggles.includes(struggle) ? '#fff' : '#A8B2C1'}>
                     {struggle}
                   </ThemedText>
                 </LinearGradient>
@@ -214,13 +214,13 @@ export default function PreferencesScreen() {
                 style={styles.buttonFlex}>
                 <LinearGradient
                   colors={prefs.gender === gender 
-                    ? ['#667eea', '#764ba2'] 
-                    : ['#f5f5f5', '#f5f5f5']}
+                    ? ['#D97941', '#E89964'] 
+                    : ['#F8F9FA', '#F8F9FA']}
                   style={styles.button}>
                   <ThemedText
                     style={styles.buttonText}
-                    lightColor={prefs.gender === gender ? '#fff' : '#666'}
-                    darkColor={prefs.gender === gender ? '#fff' : '#aaa'}>
+                    lightColor={prefs.gender === gender ? '#fff' : '#6B7280'}
+                    darkColor={prefs.gender === gender ? '#fff' : '#A8B2C1'}>
                     {gender}
                   </ThemedText>
                 </LinearGradient>
@@ -243,13 +243,13 @@ export default function PreferencesScreen() {
                 style={styles.buttonFlex}>
                 <LinearGradient
                   colors={prefs.sessionType === type 
-                    ? ['#667eea', '#764ba2'] 
-                    : ['#f5f5f5', '#f5f5f5']}
+                    ? ['#6BA587', '#85BFA1'] 
+                    : ['#F8F9FA', '#F8F9FA']}
                   style={styles.button}>
                   <ThemedText
                     style={styles.buttonText}
-                    lightColor={prefs.sessionType === type ? '#fff' : '#666'}
-                    darkColor={prefs.sessionType === type ? '#fff' : '#aaa'}>
+                    lightColor={prefs.sessionType === type ? '#fff' : '#6B7280'}
+                    darkColor={prefs.sessionType === type ? '#fff' : '#A8B2C1'}>
                     {type}
                   </ThemedText>
                 </LinearGradient>
@@ -268,11 +268,11 @@ export default function PreferencesScreen() {
             style={styles.selectButton}>
             <ThemedText 
               style={styles.selectButtonText}
-              lightColor={prefs.approach ? '#333' : '#999'}
-              darkColor={prefs.approach ? '#ccc' : '#777'}>
+              lightColor={prefs.approach ? '#2A2D35' : '#A8B2C1'}
+              darkColor={prefs.approach ? '#F8F9FA' : '#6B7280'}>
               {prefs.approach || 'Select an approach'}
             </ThemedText>
-            <ThemedText lightColor="#999" darkColor="#777">▼</ThemedText>
+            <ThemedText lightColor="#A8B2C1" darkColor="#6B7280">▼</ThemedText>
           </TouchableOpacity>
         </View>
 
@@ -283,7 +283,7 @@ export default function PreferencesScreen() {
           activeOpacity={0.8}
           style={styles.submitContainer}>
           <LinearGradient
-            colors={isValid ? ['#667eea', '#764ba2'] : ['#ccc', '#ccc']}
+            colors={isValid ? ['#2B6B7F', '#6BA587'] : ['#E8ECF1', '#E8ECF1']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.submitButton}>
@@ -340,20 +340,26 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   headerIcon: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 72,
+    height: 72,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 16,
+    shadowColor: '#2B6B7F',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 6,
   },
   headerIconText: {
-    fontSize: 32,
+    fontSize: 36,
   },
   title: {
     fontSize: 28,
     textAlign: 'center',
     marginBottom: 8,
+    fontWeight: '700',
   },
   subtitle: {
     fontSize: 14,
@@ -364,27 +370,27 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 20,
     marginBottom: 16,
-    borderWidth: 2,
-    borderColor: '#f0f0f0',
-    shadowColor: '#000',
+    borderWidth: 1,
+    borderColor: '#E8ECF1',
+    shadowColor: '#2B6B7F',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
     elevation: 3,
   },
   label: {
-    fontSize: 14,
+    fontSize: 15,
     marginBottom: 12,
   },
   selectButton: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#f0f0f0',
+    borderWidth: 1,
+    borderColor: '#E8ECF1',
     borderRadius: 12,
     padding: 16,
-    backgroundColor: '#fafafa',
+    backgroundColor: '#F8F9FA',
   },
   selectButtonText: {
     fontSize: 15,
@@ -392,20 +398,22 @@ const styles = StyleSheet.create({
   tagsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 10,
   },
   tag: {
     paddingHorizontal: 16,
     paddingVertical: 10,
-    borderRadius: 20,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: 'transparent',
   },
   tagText: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '600',
   },
   buttonRow: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 10,
   },
   buttonFlex: {
     flex: 1,
@@ -414,6 +422,8 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'transparent',
   },
   buttonText: {
     fontSize: 13,
@@ -427,6 +437,11 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     borderRadius: 16,
     alignItems: 'center',
+    shadowColor: '#2B6B7F',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 4,
   },
   submitText: {
     fontSize: 16,
@@ -447,7 +462,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: '#E8ECF1',
   },
   pickerTitle: {
     fontSize: 18,
@@ -462,7 +477,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#f5f5f5',
+    borderBottomColor: '#F8F9FA',
   },
   pickerOptionText: {
     fontSize: 16,

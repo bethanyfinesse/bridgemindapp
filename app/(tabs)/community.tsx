@@ -1,176 +1,205 @@
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from 'react';
-import { FlatList, KeyboardAvoidingView, Platform, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
-
-const STORAGE_KEY = '@bridgemind_posts_v1';
+import { Alert, FlatList, KeyboardAvoidingView, Platform, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 
 interface Post {
   id: string;
-  text: string;
-  timestamp: number;
+  content: string;
+  timestamp: Date;
   likes: number;
   comments: number;
-  liked: boolean;
+  liked?: boolean;
 }
 
-export default function Community() {
+export default function CommunityScreen() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [text, setText] = useState('');
+  const [newPost, setNewPost] = useState('');
 
   useEffect(() => {
-    (async () => {
-      try {
-        const raw = await AsyncStorage.getItem(STORAGE_KEY);
-        if (raw) setPosts(JSON.parse(raw));
-      } catch {
-        // ignore
-      }
-    })();
+    loadPosts();
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
-      } catch {
-        // ignore
-      }
-    })();
-  }, [posts]);
+  const loadPosts = async () => {
+    const stored = await AsyncStorage.getItem('communityPosts');
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      setPosts(parsed.map((p: any) => ({ ...p, timestamp: new Date(p.timestamp) })));
+    } else {
+      const mockPosts: Post[] = [
+        {
+          id: '1',
+          content: 'Starting therapy has been one of the best decisions I made. Remember, seeking help is a sign of strength.',
+          timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
+          likes: 24,
+          comments: 5,
+        },
+        {
+          id: '2',
+          content: 'Does anyone have tips for managing academic stress during finals week? Feeling overwhelmed.',
+          timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000),
+          likes: 12,
+          comments: 8,
+        },
+        {
+          id: '3',
+          content: 'Grateful for this supportive community. You all remind me I\'m not alone in this journey.',
+          timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+          likes: 31,
+          comments: 3,
+        },
+      ];
+      setPosts(mockPosts);
+      await AsyncStorage.setItem('communityPosts', JSON.stringify(mockPosts));
+    }
+  };
 
-  function submit() {
-    if (!text.trim()) return;
-    const p: Post = { 
-      id: Date.now().toString(), 
-      text: text.trim(),
-      timestamp: Date.now(),
+  const handlePost = async () => {
+    if (!newPost.trim()) {
+      Alert.alert('Please write something to share');
+      return;
+    }
+
+    const post: Post = {
+      id: Date.now().toString(),
+      content: newPost,
+      timestamp: new Date(),
       likes: 0,
       comments: 0,
-      liked: false
     };
-    setPosts((s) => [p, ...s]);
-    setText('');
-  }
 
-  function toggleLike(postId: string) {
-    setPosts(prev => prev.map(p => 
-      p.id === postId 
-        ? { ...p, liked: !p.liked, likes: p.liked ? p.likes - 1 : p.likes + 1 }
-        : p
-    ));
-  }
+    const updated = [post, ...posts];
+    setPosts(updated);
+    await AsyncStorage.setItem('communityPosts', JSON.stringify(updated));
+    setNewPost('');
+    Alert.alert('Posted!', 'Your anonymous post has been shared.');
+  };
 
-  function getTimeAgo(timestamp: number) {
-    const seconds = Math.floor((Date.now() - timestamp) / 1000);
-    if (seconds < 60) return 'now';
-    if (seconds < 3600) return `${Math.floor(seconds / 60)}m`;
-    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h`;
-    return `${Math.floor(seconds / 86400)}d`;
-  }
+  const handleLike = async (postId: string) => {
+    const updated = posts.map(post =>
+      post.id === postId
+        ? { ...post, liked: !post.liked, likes: post.liked ? post.likes - 1 : post.likes + 1 }
+        : post
+    );
+    setPosts(updated);
+    await AsyncStorage.setItem('communityPosts', JSON.stringify(updated));
+  };
+
+  const getTimeAgo = (date: Date) => {
+    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+    if (seconds < 60) return 'just now';
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+    const days = Math.floor(hours / 24);
+    return `${days}d ago`;
+  };
+
+  const renderPost = ({ item }: { item: Post }) => (
+    <View style={styles.postCard}>
+      <View style={styles.postHeader}>
+        <View style={styles.avatarBadge}>
+          <View style={styles.avatarCircle} />
+        </View>
+        <View style={styles.postInfo}>
+          <ThemedText style={styles.postAuthor} lightColor="#374151" darkColor="#374151">
+            Anonymous
+          </ThemedText>
+          <ThemedText style={styles.postTime} lightColor="#9CA3AF" darkColor="#9CA3AF">
+            {getTimeAgo(item.timestamp)}
+          </ThemedText>
+        </View>
+      </View>
+
+      <ThemedText style={styles.postContent} lightColor="#1F2937" darkColor="#1F2937">
+        {item.content}
+      </ThemedText>
+
+      <View style={styles.postActions}>
+        <TouchableOpacity 
+          onPress={() => handleLike(item.id)}
+          style={styles.actionButton}>
+          <ThemedText 
+            style={[styles.actionIcon, item.liked && styles.actionIconLiked]}
+            lightColor={item.liked ? '#D97941' : '#9CA3AF'}
+            darkColor={item.liked ? '#D97941' : '#9CA3AF'}>
+            ♡
+          </ThemedText>
+          <ThemedText style={styles.actionText} lightColor="#6B7280" darkColor="#6B7280">
+            {item.likes}
+          </ThemedText>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.actionButton}>
+          <ThemedText style={styles.actionIcon} lightColor="#9CA3AF" darkColor="#9CA3AF">
+            💬
+          </ThemedText>
+          <ThemedText style={styles.actionText} lightColor="#6B7280" darkColor="#6B7280">
+            {item.comments}
+          </ThemedText>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 
   return (
-    <ThemedView style={styles.container} lightColor="#fafafa" darkColor="#000">
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.keyboardView}
-        keyboardVerticalOffset={100}>
+    <LinearGradient
+      colors={['#F8F4FF', '#FFF5F2', '#F0FAFF']}
+      style={styles.container}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}>
         
+        {/* Header */}
         <View style={styles.header}>
-          <ThemedText type="title" style={styles.screenTitle}>
+          <ThemedText style={styles.headerTitle} lightColor="#1F2937" darkColor="#1F2937">
             Community
           </ThemedText>
-          <ThemedText style={styles.screenDesc} lightColor="#666" darkColor="#999">
-            Share anonymously
+          <ThemedText style={styles.headerSubtitle} lightColor="#6B7280" darkColor="#6B7280">
+            Share anonymously, support each other
           </ThemedText>
         </View>
 
+        {/* Composer */}
+        <View style={styles.composerContainer}>
+          <View style={styles.composer}>
+            <View style={styles.composerIcon}>
+              <View style={styles.composerCircle} />
+            </View>
+            <TextInput
+              style={styles.composerInput}
+              placeholder="What's on your mind?"
+              placeholderTextColor="#9CA3AF"
+              value={newPost}
+              onChangeText={setNewPost}
+              multiline
+              maxLength={500}
+            />
+          </View>
+          <TouchableOpacity onPress={handlePost} style={styles.postButton}>
+            <View style={styles.postButtonInner}>
+              <ThemedText style={styles.postButtonText} lightColor="#8B7BA8" darkColor="#8B7BA8">
+                Post
+              </ThemedText>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        {/* Posts Feed */}
         <FlatList
           data={posts}
-          keyExtractor={(i) => i.id}
-          contentContainerStyle={styles.listContent}
+          renderItem={renderPost}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.feedContent}
           showsVerticalScrollIndicator={false}
-          ListHeaderComponent={
-            <View style={styles.composerCard}>
-              <View style={styles.composerHeader}>
-                <View style={styles.composerAvatar}>
-                  <ThemedText style={styles.composerEmoji}>🎭</ThemedText>
-                </View>
-                <ThemedText type="defaultSemiBold" style={styles.composerLabel}>
-                  What's on your mind?
-                </ThemedText>
-              </View>
-              
-              <TextInput
-                placeholder="Share your thoughts..."
-                placeholderTextColor="#999"
-                value={text}
-                onChangeText={setText}
-                style={styles.input}
-                multiline
-              />
-              
-              <TouchableOpacity 
-                onPress={submit}
-                activeOpacity={0.8}
-                disabled={!text.trim()}>
-                <View style={[styles.postButton, !text.trim() && styles.postButtonDisabled]}>
-                  <ThemedText type="defaultSemiBold" lightColor="#fff" darkColor="#fff">
-                    Post
-                  </ThemedText>
-                </View>
-              </TouchableOpacity>
-            </View>
-          }
-          renderItem={({ item }) => (
-            <View style={styles.postCard}>
-              <View style={styles.postHeader}>
-                <View style={styles.anonymousBadge}>
-                  <ThemedText style={styles.badgeEmoji}>🎭</ThemedText>
-                </View>
-                <View style={styles.postMeta}>
-                  <ThemedText type="defaultSemiBold" style={styles.postAuthor}>
-                    Anonymous
-                  </ThemedText>
-                  <ThemedText style={styles.postTime} lightColor="#999" darkColor="#666">
-                    {getTimeAgo(item.timestamp)}
-                  </ThemedText>
-                </View>
-              </View>
-              
-              <ThemedText style={styles.postContent} lightColor="#1a1a1a" darkColor="#ccc">
-                {item.text}
-              </ThemedText>
-              
-              <View style={styles.postActions}>
-                <TouchableOpacity 
-                  style={styles.actionBtn} 
-                  activeOpacity={0.7}
-                  onPress={() => toggleLike(item.id)}>
-                  <View style={[styles.actionButton, item.liked && styles.actionButtonLiked]}>
-                    <ThemedText 
-                      style={styles.actionText} 
-                      lightColor={item.liked ? '#fff' : '#666'} 
-                      darkColor={item.liked ? '#fff' : '#999'}>
-                      {item.liked ? '❤️' : '🤍'} {item.likes}
-                    </ThemedText>
-                  </View>
-                </TouchableOpacity>
-                
-                <TouchableOpacity style={styles.actionBtn} activeOpacity={0.7}>
-                  <View style={styles.actionButton}>
-                    <ThemedText style={styles.actionText} lightColor="#666" darkColor="#999">
-                      💬 {item.comments}
-                    </ThemedText>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
         />
       </KeyboardAvoidingView>
-    </ThemedView>
+    </LinearGradient>
   );
 }
 
@@ -178,110 +207,119 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  keyboardView: {
-    flex: 1,
-  },
   header: {
-    paddingHorizontal: 20,
     paddingTop: 60,
-    paddingBottom: 24,
+    paddingHorizontal: 24,
+    paddingBottom: 20,
   },
-  screenTitle: {
+  headerTitle: {
     fontSize: 28,
+    fontWeight: '600',
     marginBottom: 4,
-    fontWeight: '700',
   },
-  screenDesc: {
-    fontSize: 15,
+  headerSubtitle: {
+    fontSize: 14,
+    fontWeight: '400',
   },
-  listContent: {
-    padding: 20,
-    paddingTop: 0,
-  },
-  composerCard: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 20,
+  composerContainer: {
+    paddingHorizontal: 24,
     marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
   },
-  composerHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    marginBottom: 12,
-  },
-  composerAvatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    backgroundColor: '#f5f5f5',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  composerEmoji: {
-    fontSize: 20,
-  },
-  composerLabel: {
-    fontSize: 15,
-  },
-  input: {
-    minHeight: 80,
-    padding: 12,
-    borderRadius: 12,
+  composer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    borderRadius: 20,
+    padding: 16,
     borderWidth: 1,
-    borderColor: '#f0f0f0',
-    fontSize: 15,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.04,
+    shadowRadius: 12,
+    elevation: 2,
+    flexDirection: 'row',
     marginBottom: 12,
+  },
+  composerIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(139, 123, 168, 0.15)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  composerCircle: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: '#8B7BA8',
+  },
+  composerInput: {
+    flex: 1,
+    fontSize: 15,
+    color: '#1F2937',
+    minHeight: 60,
     textAlignVertical: 'top',
-    backgroundColor: '#fafafa',
   },
   postButton: {
-    paddingVertical: 12,
-    borderRadius: 10,
-    alignItems: 'center',
-    backgroundColor: '#1a1a1a',
+    borderRadius: 16,
+    overflow: 'hidden',
   },
-  postButtonDisabled: {
-    backgroundColor: '#e0e0e0',
+  postButtonInner: {
+    backgroundColor: 'rgba(139, 123, 168, 0.15)',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(139, 123, 168, 0.2)',
+  },
+  postButtonText: {
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  feedContent: {
+    paddingHorizontal: 24,
+    paddingBottom: 100,
   },
   postCard: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    borderRadius: 20,
+    padding: 16,
     marginBottom: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.04,
+    shadowRadius: 12,
     elevation: 2,
   },
   postHeader: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
     marginBottom: 12,
+    alignItems: 'center',
   },
-  anonymousBadge: {
+  avatarBadge: {
     width: 40,
     height: 40,
-    borderRadius: 12,
-    backgroundColor: '#f5f5f5',
-    alignItems: 'center',
+    borderRadius: 20,
+    backgroundColor: 'rgba(139, 123, 168, 0.15)',
     justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
   },
-  badgeEmoji: {
-    fontSize: 20,
+  avatarCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#8B7BA8',
   },
-  postMeta: {
+  postInfo: {
     flex: 1,
   },
   postAuthor: {
     fontSize: 15,
+    fontWeight: '600',
     marginBottom: 2,
   },
   postTime: {
@@ -294,26 +332,21 @@ const styles = StyleSheet.create({
   },
   postActions: {
     flexDirection: 'row',
-    gap: 8,
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: '#f5f5f5',
-  },
-  actionBtn: {
-    flex: 1,
+    gap: 20,
   },
   actionButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 10,
+    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
+    gap: 6,
   },
-  actionButtonLiked: {
-    backgroundColor: '#1a1a1a',
+  actionIcon: {
+    fontSize: 18,
+  },
+  actionIconLiked: {
+    color: '#D97941',
   },
   actionText: {
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: '500',
   },
 });
