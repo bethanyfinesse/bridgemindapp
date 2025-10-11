@@ -15,6 +15,11 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarStyle: {
+          height: 60,
+          paddingBottom: 8,
+          paddingTop: 8,
+        },
       }}>
       <Tabs.Screen
         name="index"
@@ -24,17 +29,17 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="counselor"
+        name="preferences"
         options={{
-          title: 'Counselors',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="stethoscope" color={color} />,
+          title: 'Find Counselor',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="heart.fill" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="find-friends"
+        name="matches"
         options={{
-          title: 'Find Friends',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.2.fill" color={color} />,
+          title: 'My Matches',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.3.fill" color={color} />,
         }}
       />
       <Tabs.Screen
@@ -42,6 +47,13 @@ export default function TabLayout() {
         options={{
           title: 'Community',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="bubble.left.and.bubble.right.fill" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="find-friends"
+        options={{
+          title: 'Friends',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.2.fill" color={color} />,
         }}
       />
     </Tabs>
