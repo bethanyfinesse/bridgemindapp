@@ -43,11 +43,11 @@ function PickerModal({ visible, onClose, options, selected, onSelect, title }: P
       <View style={styles.modalBackdrop}>
         <View style={styles.pickerModal}>
           <View style={styles.pickerHeader}>
-            <ThemedText type="defaultSemiBold" style={styles.pickerTitle} lightColor="#1F2937" darkColor="#1F2937">
+            <ThemedText style={styles.pickerTitle}>
               {title}
             </ThemedText>
             <TouchableOpacity onPress={onClose}>
-              <ThemedText style={styles.pickerClose} lightColor="#8B7BA8" darkColor="#8B7BA8">Done</ThemedText>
+              <ThemedText style={styles.pickerClose}>Done</ThemedText>
             </TouchableOpacity>
           </View>
           <FlatList
@@ -61,12 +61,10 @@ function PickerModal({ visible, onClose, options, selected, onSelect, title }: P
                 }}
                 style={styles.pickerOption}>
                 <ThemedText 
-                  style={[styles.pickerOptionText, selected === item && styles.pickerOptionSelected]}
-                  lightColor={selected === item ? '#8B7BA8' : '#374151'}
-                  darkColor={selected === item ? '#8B7BA8' : '#374151'}>
+                  style={[styles.pickerOptionText, selected === item && styles.pickerOptionSelected]}>
                   {item}
                 </ThemedText>
-                {selected === item && <ThemedText lightColor="#8B7BA8" darkColor="#8B7BA8">✓</ThemedText>}
+                {selected === item && <ThemedText style={styles.checkmark}>✓</ThemedText>}
               </TouchableOpacity>
             )}
           />
@@ -114,7 +112,7 @@ export default function PreferencesScreen() {
 
   return (
     <LinearGradient
-      colors={['#F8F4FF', '#FFF5F2', '#F0FAFF']}
+      colors={['#0A0A0A', '#1A1A1A', '#0A0A0A']}
       style={styles.container}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}>
@@ -124,54 +122,50 @@ export default function PreferencesScreen() {
         
         {/* Header */}
         <View style={styles.header}>
-          <ThemedText style={styles.headerTitle} lightColor="#1F2937" darkColor="#1F2937">
+          <ThemedText style={styles.headerTitle}>
             Find Your Counselor
           </ThemedText>
-          <ThemedText style={styles.headerSubtitle} lightColor="#6B7280" darkColor="#6B7280">
+          <ThemedText style={styles.headerSubtitle}>
             Let's find the perfect match for you
           </ThemedText>
         </View>
 
         {/* Language */}
         <View style={styles.card}>
-          <ThemedText type="defaultSemiBold" style={styles.label} lightColor="#374151" darkColor="#374151">
-            🌍 Preferred Language
+          <ThemedText style={styles.label}>
+            Preferred Language
           </ThemedText>
           <TouchableOpacity 
             onPress={() => setShowLanguagePicker(true)}
             style={styles.selectButton}>
             <ThemedText 
-              style={styles.selectButtonText}
-              lightColor={prefs.language ? '#1F2937' : '#9CA3AF'}
-              darkColor={prefs.language ? '#1F2937' : '#9CA3AF'}>
+              style={[styles.selectButtonText, !prefs.language && styles.placeholderText]}>
               {prefs.language || 'Select a language'}
             </ThemedText>
-            <ThemedText lightColor="#9CA3AF" darkColor="#9CA3AF">▼</ThemedText>
+            <ThemedText style={styles.dropdownIcon}>▼</ThemedText>
           </TouchableOpacity>
         </View>
 
         {/* Country */}
         <View style={styles.card}>
-          <ThemedText type="defaultSemiBold" style={styles.label} lightColor="#374151" darkColor="#374151">
-            🏠 Your Country of Origin
+          <ThemedText style={styles.label}>
+            Your Country of Origin
           </ThemedText>
           <TouchableOpacity 
             onPress={() => setShowCountryPicker(true)}
             style={styles.selectButton}>
             <ThemedText 
-              style={styles.selectButtonText}
-              lightColor={prefs.country ? '#1F2937' : '#9CA3AF'}
-              darkColor={prefs.country ? '#1F2937' : '#9CA3AF'}>
+              style={[styles.selectButtonText, !prefs.country && styles.placeholderText]}>
               {prefs.country || 'Select your country'}
             </ThemedText>
-            <ThemedText lightColor="#9CA3AF" darkColor="#9CA3AF">▼</ThemedText>
+            <ThemedText style={styles.dropdownIcon}>▼</ThemedText>
           </TouchableOpacity>
         </View>
 
         {/* Struggles */}
         <View style={styles.card}>
-          <ThemedText type="defaultSemiBold" style={styles.label} lightColor="#374151" darkColor="#374151">
-            💬 What are you struggling with?
+          <ThemedText style={styles.label}>
+            What are you struggling with?
           </ThemedText>
           <View style={styles.tagsContainer}>
             {struggles.map(struggle => (
@@ -184,9 +178,7 @@ export default function PreferencesScreen() {
                   prefs.struggles.includes(struggle) && styles.tagActive
                 ]}>
                 <ThemedText 
-                  style={styles.tagText}
-                  lightColor={prefs.struggles.includes(struggle) ? '#D97941' : '#6B7280'}
-                  darkColor={prefs.struggles.includes(struggle) ? '#D97941' : '#6B7280'}>
+                  style={[styles.tagText, prefs.struggles.includes(struggle) && styles.tagTextActive]}>
                   {struggle}
                 </ThemedText>
               </TouchableOpacity>
@@ -196,8 +188,8 @@ export default function PreferencesScreen() {
 
         {/* Gender */}
         <View style={styles.card}>
-          <ThemedText type="defaultSemiBold" style={styles.label} lightColor="#374151" darkColor="#374151">
-            👤 Counselor Gender Preference
+          <ThemedText style={styles.label}>
+            Counselor Gender Preference
           </ThemedText>
           <View style={styles.buttonRow}>
             {['Male', 'Female', 'No Preference'].map(gender => (
@@ -210,9 +202,7 @@ export default function PreferencesScreen() {
                   prefs.gender === gender && styles.buttonActive
                 ]}>
                 <ThemedText
-                  style={styles.buttonText}
-                  lightColor={prefs.gender === gender ? '#6BA587' : '#6B7280'}
-                  darkColor={prefs.gender === gender ? '#6BA587' : '#6B7280'}>
+                  style={[styles.buttonText, prefs.gender === gender && styles.buttonTextActive]}>
                   {gender}
                 </ThemedText>
               </TouchableOpacity>
@@ -222,8 +212,8 @@ export default function PreferencesScreen() {
 
         {/* Session Type */}
         <View style={styles.card}>
-          <ThemedText type="defaultSemiBold" style={styles.label} lightColor="#374151" darkColor="#374151">
-            📹 Preferred Session Type
+          <ThemedText style={styles.label}>
+            Preferred Session Type
           </ThemedText>
           <View style={styles.buttonRow}>
             {['Video', 'Chat', 'In-Person'].map(type => (
@@ -236,9 +226,7 @@ export default function PreferencesScreen() {
                   prefs.sessionType === type && styles.buttonActive
                 ]}>
                 <ThemedText
-                  style={styles.buttonText}
-                  lightColor={prefs.sessionType === type ? '#6BA587' : '#6B7280'}
-                  darkColor={prefs.sessionType === type ? '#6BA587' : '#6B7280'}>
+                  style={[styles.buttonText, prefs.sessionType === type && styles.buttonTextActive]}>
                   {type}
                 </ThemedText>
               </TouchableOpacity>
@@ -248,19 +236,17 @@ export default function PreferencesScreen() {
 
         {/* Therapy Approach */}
         <View style={styles.card}>
-          <ThemedText type="defaultSemiBold" style={styles.label} lightColor="#374151" darkColor="#374151">
-            🧠 Therapy Approach (Optional)
+          <ThemedText style={styles.label}>
+            Therapy Approach (Optional)
           </ThemedText>
           <TouchableOpacity 
             onPress={() => setShowApproachPicker(true)}
             style={styles.selectButton}>
             <ThemedText 
-              style={styles.selectButtonText}
-              lightColor={prefs.approach ? '#1F2937' : '#9CA3AF'}
-              darkColor={prefs.approach ? '#1F2937' : '#9CA3AF'}>
+              style={[styles.selectButtonText, !prefs.approach && styles.placeholderText]}>
               {prefs.approach || 'Select an approach'}
             </ThemedText>
-            <ThemedText lightColor="#9CA3AF" darkColor="#9CA3AF">▼</ThemedText>
+            <ThemedText style={styles.dropdownIcon}>▼</ThemedText>
           </TouchableOpacity>
         </View>
 
@@ -273,11 +259,7 @@ export default function PreferencesScreen() {
             styles.submitButton,
             !isValid && styles.submitButtonDisabled
           ]}>
-          <ThemedText 
-            type="defaultSemiBold" 
-            lightColor={isValid ? '#8B7BA8' : '#9CA3AF'} 
-            darkColor={isValid ? '#8B7BA8' : '#9CA3AF'}
-            style={styles.submitText}>
+          <ThemedText style={styles.submitText}>
             Find My Counselors →
           </ThemedText>
         </TouchableOpacity>
@@ -323,46 +305,57 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
+    paddingBottom: 20,
   },
   headerTitle: {
-    fontSize: 28,
-    fontWeight: '600',
+    fontSize: 32,
+    fontWeight: '300',
     marginBottom: 4,
+    letterSpacing: -0.5,
+    color: '#FFFFFF',
   },
   headerSubtitle: {
     fontSize: 14,
     fontWeight: '400',
+    color: '#888',
+    letterSpacing: 0.5,
   },
   card: {
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-    borderRadius: 20,
+    backgroundColor: '#1A1A1A',
+    borderRadius: 16,
     padding: 20,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 12,
-    elevation: 2,
+    borderColor: '#333',
   },
   label: {
     fontSize: 15,
     marginBottom: 12,
     fontWeight: '600',
+    color: '#FFFFFF',
   },
   selectButton: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(156, 163, 175, 0.3)',
+    borderColor: '#333',
     borderRadius: 12,
     padding: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: '#1A1A1A',
   },
   selectButtonText: {
     fontSize: 15,
+    color: '#FFFFFF',
+  },
+  placeholderText: {
+    color: '#666',
+  },
+  dropdownIcon: {
+    color: '#666',
+    fontSize: 12,
   },
   tagsContainer: {
     flexDirection: 'row',
@@ -372,18 +365,22 @@ const styles = StyleSheet.create({
   tag: {
     paddingHorizontal: 16,
     paddingVertical: 10,
-    borderRadius: 12,
+    borderRadius: 8,
     borderWidth: 1,
-    borderColor: 'rgba(107, 114, 128, 0.2)',
-    backgroundColor: 'rgba(107, 114, 128, 0.08)',
+    borderColor: '#333',
+    backgroundColor: '#1A1A1A',
   },
   tagActive: {
-    backgroundColor: 'rgba(217, 121, 65, 0.15)',
-    borderColor: 'rgba(217, 121, 65, 0.3)',
+    backgroundColor: '#333',
+    borderColor: '#444',
   },
   tagText: {
     fontSize: 13,
-    fontWeight: '600',
+    fontWeight: '500',
+    color: '#888',
+  },
+  tagTextActive: {
+    color: '#FFFFFF',
   },
   buttonRow: {
     flexDirection: 'row',
@@ -392,49 +389,55 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     paddingVertical: 14,
-    borderRadius: 12,
+    borderRadius: 8,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(107, 165, 135, 0.2)',
-    backgroundColor: 'rgba(107, 165, 135, 0.08)',
+    borderColor: '#333',
+    backgroundColor: '#1A1A1A',
   },
   buttonActive: {
-    backgroundColor: 'rgba(107, 165, 135, 0.15)',
-    borderColor: 'rgba(107, 165, 135, 0.3)',
+    backgroundColor: '#333',
+    borderColor: '#444',
   },
   buttonText: {
     fontSize: 13,
-    fontWeight: '600',
+    fontWeight: '500',
+    color: '#888',
+  },
+  buttonTextActive: {
+    color: '#FFFFFF',
   },
   submitButton: {
     marginTop: 10,
     marginBottom: 30,
     paddingVertical: 18,
-    borderRadius: 16,
+    borderRadius: 12,
     alignItems: 'center',
-    backgroundColor: 'rgba(139, 123, 168, 0.15)',
+    backgroundColor: '#333',
     borderWidth: 1,
-    borderColor: 'rgba(139, 123, 168, 0.2)',
+    borderColor: '#444',
   },
   submitButtonDisabled: {
-    opacity: 0.5,
+    opacity: 0.4,
   },
   submitText: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '500',
+    color: '#FFFFFF',
+    letterSpacing: 0.5,
   },
   modalBackdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.8)',
     justifyContent: 'flex-end',
   },
   pickerModal: {
-    backgroundColor: 'rgba(255, 255, 255, 0.98)',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
+    backgroundColor: '#1A1A1A',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
     maxHeight: '70%',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
+    borderColor: '#333',
   },
   pickerHeader: {
     flexDirection: 'row',
@@ -442,14 +445,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(156, 163, 175, 0.2)',
+    borderBottomColor: '#333',
   },
   pickerTitle: {
     fontSize: 18,
+    fontWeight: '500',
+    color: '#FFFFFF',
   },
   pickerClose: {
     fontSize: 16,
     fontWeight: '600',
+    color: '#FFFFFF',
   },
   pickerOption: {
     flexDirection: 'row',
@@ -457,12 +463,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(156, 163, 175, 0.1)',
+    borderBottomColor: '#333',
   },
   pickerOptionText: {
     fontSize: 16,
+    color: '#CCCCCC',
   },
   pickerOptionSelected: {
+    fontWeight: '600',
+    color: '#FFFFFF',
+  },
+  checkmark: {
+    color: '#FFFFFF',
     fontWeight: '600',
   },
 });

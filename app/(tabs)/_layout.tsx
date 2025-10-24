@@ -7,15 +7,15 @@ import React from 'react';
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   
-  // Soft, cohesive color palette matching community page
+  // Monochromatic color palette matching the app theme
   const brandColors = {
-    primary: '#8B7BA8',        // Soft purple
-    primaryDark: '#6B5B88',
-    bg: '#FFFFFF',
-    card: 'rgba(255, 255, 255, 0.95)',
-    text: '#1F2937',
-    textMuted: '#9CA3AF',
-    border: 'rgba(255, 255, 255, 0.5)',
+    primary: '#FFFFFF',        // White for active states
+    primaryDark: '#CCCCCC',
+    bg: '#0A0A0A',            // Dark background
+    card: '#1A1A1A',          // Card background
+    text: '#FFFFFF',          // Primary text
+    textMuted: '#888888',     // Muted text
+    border: '#333333',        // Borders
   };
 
   return (
@@ -34,8 +34,8 @@ export default function TabLayout() {
           paddingTop: 10,
           shadowColor: '#000',
           shadowOffset: { width: 0, height: -2 },
-          shadowOpacity: 0.08,
-          shadowRadius: 12,
+          shadowOpacity: 0.3,
+          shadowRadius: 8,
           elevation: 8,
         },
         tabBarLabelStyle: {

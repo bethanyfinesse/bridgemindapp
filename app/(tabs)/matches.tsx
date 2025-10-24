@@ -85,38 +85,38 @@ export default function MatchesScreen() {
       <View style={styles.counselorHeader}>
         <View style={styles.avatarContainer}>
           <View style={styles.avatarCircle}>
-            <ThemedText style={styles.avatarText} lightColor="#fff" darkColor="#fff">
+            <ThemedText style={styles.avatarText}>
               {item.name.split(' ').map(n => n[0]).join('')}
             </ThemedText>
           </View>
         </View>
         <View style={styles.counselorInfo}>
-          <ThemedText style={styles.name} lightColor="#1F2937" darkColor="#1F2937">
+          <ThemedText style={styles.name}>
             {item.name}
           </ThemedText>
-          <ThemedText style={styles.country} lightColor="#6B7280" darkColor="#6B7280">
+          <ThemedText style={styles.country}>
             {item.country}
           </ThemedText>
         </View>
       </View>
 
       <View style={styles.ratingRow}>
-        <ThemedText style={styles.rating} lightColor="#374151" darkColor="#374151">
-          ⭐ {item.rating}
+        <ThemedText style={styles.rating}>
+          ★ {item.rating}
         </ThemedText>
-        <ThemedText style={styles.sessions} lightColor="#6B7280" darkColor="#6B7280">
+        <ThemedText style={styles.sessions}>
           {item.sessions} sessions
         </ThemedText>
       </View>
 
       <View style={styles.section}>
-        <ThemedText style={styles.sectionTitle} lightColor="#6B7280" darkColor="#6B7280">
+        <ThemedText style={styles.sectionTitle}>
           Languages
         </ThemedText>
         <View style={styles.tags}>
           {item.languages.map((lang) => (
             <View key={lang} style={styles.tag}>
-              <ThemedText style={styles.tagText} lightColor="#2B6B7F" darkColor="#2B6B7F">
+              <ThemedText style={styles.tagText}>
                 {lang}
               </ThemedText>
             </View>
@@ -125,13 +125,13 @@ export default function MatchesScreen() {
       </View>
 
       <View style={styles.section}>
-        <ThemedText style={styles.sectionTitle} lightColor="#6B7280" darkColor="#6B7280">
+        <ThemedText style={styles.sectionTitle}>
           Specialties
         </ThemedText>
         <View style={styles.tags}>
           {item.specialties.map((spec) => (
             <View key={spec} style={styles.tag}>
-              <ThemedText style={styles.tagText} lightColor="#2B6B7F" darkColor="#2B6B7F">
+              <ThemedText style={styles.tagText}>
                 {spec}
               </ThemedText>
             </View>
@@ -140,16 +140,16 @@ export default function MatchesScreen() {
       </View>
 
       <View style={styles.section}>
-        <ThemedText style={styles.sectionTitle} lightColor="#6B7280" darkColor="#6B7280">
+        <ThemedText style={styles.sectionTitle}>
           Approach
         </ThemedText>
-        <ThemedText style={styles.approachText} lightColor="#374151" darkColor="#374151">
+        <ThemedText style={styles.approachText}>
           {item.approach}
         </ThemedText>
       </View>
 
       <TouchableOpacity style={styles.button}>
-        <ThemedText style={styles.buttonText} lightColor="#D97941" darkColor="#D97941">
+        <ThemedText style={styles.buttonText}>
           Book Session →
         </ThemedText>
       </TouchableOpacity>
@@ -158,16 +158,16 @@ export default function MatchesScreen() {
 
   return (
     <LinearGradient
-      colors={['#F8F4FF', '#FFF5F2', '#F0FAFF']}
+      colors={['#0A0A0A', '#1A1A1A', '#0A0A0A']}
       style={styles.container}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}>
       
       <View style={styles.header}>
-        <ThemedText style={styles.headerTitle} lightColor="#1F2937" darkColor="#1F2937">
+        <ThemedText style={styles.headerTitle}>
           My Matches
         </ThemedText>
-        <ThemedText style={styles.headerSubtitle} lightColor="#6B7280" darkColor="#6B7280">
+        <ThemedText style={styles.headerSubtitle}>
           Counselors matched to your preferences
         </ThemedText>
       </View>
@@ -182,7 +182,7 @@ export default function MatchesScreen() {
         />
       ) : (
         <View style={styles.emptyState}>
-          <ThemedText style={styles.emptyText} lightColor="#6B7280" darkColor="#6B7280">
+          <ThemedText style={styles.emptyText}>
             No matches yet — fill out your preferences first!
           </ThemedText>
         </View>
@@ -199,32 +199,34 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     paddingHorizontal: 24,
     paddingBottom: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
   },
   headerTitle: {
-    fontSize: 28,
-    fontWeight: '600',
+    fontSize: 32,
+    fontWeight: '300',
     marginBottom: 4,
+    letterSpacing: -0.5,
+    color: '#FFFFFF',
   },
   headerSubtitle: {
     fontSize: 14,
     fontWeight: '400',
+    color: '#888',
+    letterSpacing: 0.5,
   },
   listContent: {
     paddingHorizontal: 24,
     paddingBottom: 100,
+    paddingTop: 16,
   },
   card: {
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-    borderRadius: 24,
+    backgroundColor: '#1A1A1A',
+    borderRadius: 16,
     padding: 20,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.06,
-    shadowRadius: 16,
-    elevation: 4,
+    borderColor: '#333',
   },
   counselorHeader: {
     flexDirection: 'row',
@@ -232,51 +234,52 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   avatarContainer: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: 'rgba(43, 107, 127, 0.15)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
+    marginRight: 16,
   },
   avatarCircle: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: '#2B6B7F',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#404040',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#333',
   },
   avatarText: {
     fontSize: 18,
     fontWeight: '600',
+    color: '#FFFFFF',
   },
   counselorInfo: {
     flex: 1,
   },
   name: { 
     fontSize: 18, 
-    fontWeight: '600', 
+    fontWeight: '500', 
     marginBottom: 2,
+    color: '#FFFFFF',
   },
   country: { 
     fontSize: 14,
+    color: '#888',
   },
   ratingRow: {
     flexDirection: 'row',
-    gap: 12,
+    gap: 16,
     marginBottom: 16,
   },
   rating: { 
     fontSize: 14,
     fontWeight: '500',
+    color: '#CCCCCC',
   },
   sessions: {
     fontSize: 14,
+    color: '#888',
   },
   section: { 
-    marginBottom: 12,
+    marginBottom: 16,
   },
   sectionTitle: { 
     fontSize: 12, 
@@ -284,10 +287,12 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     marginBottom: 8,
+    color: '#888',
   },
   approachText: {
     fontSize: 14,
     lineHeight: 20,
+    color: '#CCCCCC',
   },
   tags: { 
     flexDirection: 'row', 
@@ -295,29 +300,32 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   tag: {
-    backgroundColor: 'rgba(43, 107, 127, 0.1)',
+    backgroundColor: '#333',
     paddingVertical: 6,
     paddingHorizontal: 12,
-    borderRadius: 12,
+    borderRadius: 8,
     borderWidth: 1,
-    borderColor: 'rgba(43, 107, 127, 0.2)',
+    borderColor: '#444',
   },
   tagText: { 
-    fontSize: 13, 
+    fontSize: 12, 
     fontWeight: '500',
+    color: '#CCCCCC',
   },
   button: {
-    marginTop: 12,
-    backgroundColor: 'rgba(217, 121, 65, 0.15)',
+    marginTop: 8,
+    backgroundColor: '#333',
     paddingVertical: 14,
-    borderRadius: 16,
+    borderRadius: 12,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(217, 121, 65, 0.2)',
+    borderColor: '#444',
   },
   buttonText: { 
     fontSize: 15, 
-    fontWeight: '600',
+    fontWeight: '500',
+    color: '#FFFFFF',
+    letterSpacing: 0.5,
   },
   emptyState: {
     flex: 1,
@@ -329,5 +337,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     lineHeight: 24,
+    color: '#888',
   },
 });

@@ -17,7 +17,7 @@ interface Student {
 export default function FindFriendsScreen() {
   const [connected, setConnected] = useState<string[]>([]);
 
-  const colors = ['#2B6B7F', '#D97941', '#8B7BA8', '#6BA587'];
+  const colors = ['#404040', '#606060', '#808080', '#A0A0A0'];
 
   const mockStudents: Student[] = students.map((student, index) => ({
     ...student,
@@ -38,46 +38,46 @@ export default function FindFriendsScreen() {
 
     return (
       <View style={styles.studentCard}>
-        {/* Avatar */}
-        <View style={[styles.avatarContainer, { backgroundColor: `${item.color}20` }]}>
-          <View style={[styles.avatarCircle, { backgroundColor: item.color }]}>
-            <ThemedText style={styles.avatarText} lightColor="#fff" darkColor="#fff">
-              {item.name.split(' ').map(n => n[0]).join('')}
-            </ThemedText>
-          </View>
-        </View>
-
-        {/* Info */}
-        <View style={styles.studentInfo}>
-          <ThemedText style={styles.studentName} lightColor="#1F2937" darkColor="#1F2937">
-            {item.name}
-          </ThemedText>
-          
-          <View style={styles.countryRow}>
-            <ThemedText style={styles.countryFlag}>
-              {item.country === 'China' ? '🇨🇳' : item.country === 'India' ? '🇮🇳' : item.country === 'Mexico' ? '🇲🇽' : '🌍'}
-            </ThemedText>
-            <ThemedText style={styles.countryText} lightColor="#6B7280" darkColor="#6B7280">
-              {item.country}
-            </ThemedText>
+        {/* Header Row */}
+        <View style={styles.headerRow}>
+          {/* Avatar */}
+          <View style={styles.avatarContainer}>
+            <View style={[styles.avatarCircle, { backgroundColor: item.color }]}>
+              <ThemedText style={styles.avatarText}>
+                {item.name.split(' ').map(n => n[0]).join('')}
+              </ThemedText>
+            </View>
           </View>
 
-          <View style={styles.majorBadge}>
-            <ThemedText style={styles.majorText} lightColor="#2B6B7F" darkColor="#2B6B7F">
-              {item.major}
+          {/* Info */}
+          <View style={styles.studentInfo}>
+            <ThemedText style={styles.studentName}>
+              {item.name}
             </ThemedText>
+            
+            <View style={styles.detailsRow}>
+              <ThemedText style={styles.countryText}>
+                {item.country}
+              </ThemedText>
+
+              <View style={styles.majorBadge}>
+                <ThemedText style={styles.majorText}>
+                  {item.major}
+                </ThemedText>
+              </View>
+            </View>
           </View>
         </View>
 
         {/* Hobbies */}
         <View style={styles.hobbiesSection}>
-          <ThemedText style={styles.hobbiesLabel} lightColor="#6B7280" darkColor="#6B7280">
+          <ThemedText style={styles.hobbiesLabel}>
             Interests
           </ThemedText>
           <View style={styles.hobbiesGrid}>
             {item.hobbies.map((hobby, idx) => (
               <View key={idx} style={styles.hobbyTag}>
-                <ThemedText style={styles.hobbyText} lightColor="#374151" darkColor="#374151">
+                <ThemedText style={styles.hobbyText}>
                   {hobby}
                 </ThemedText>
               </View>
@@ -88,19 +88,11 @@ export default function FindFriendsScreen() {
         {/* Connect Button */}
         <TouchableOpacity 
           onPress={() => handleConnect(item.id, item.name)}
-          style={styles.connectButton}
+          style={[styles.connectButton, isConnected && styles.connectButtonConnected]}
           disabled={isConnected}>
-          <View style={[
-            styles.connectButtonInner,
-            isConnected && styles.connectButtonConnected
-          ]}>
-            <ThemedText 
-              style={styles.connectButtonText}
-              lightColor={isConnected ? '#6BA587' : '#D97941'}
-              darkColor={isConnected ? '#6BA587' : '#D97941'}>
-              {isConnected ? '✓ Connected' : 'Connect'}
-            </ThemedText>
-          </View>
+          <ThemedText style={styles.connectButtonText}>
+            {isConnected ? '✓ Connected' : '+ Connect'}
+          </ThemedText>
         </TouchableOpacity>
       </View>
     );
@@ -108,17 +100,17 @@ export default function FindFriendsScreen() {
 
   return (
     <LinearGradient
-      colors={['#F8F4FF', '#FFF5F2', '#F0FAFF']}
+      colors={['#0A0A0A', '#1A1A1A', '#0A0A0A']}
       style={styles.container}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}>
       
       {/* Header */}
       <View style={styles.header}>
-        <ThemedText style={styles.headerTitle} lightColor="#1F2937" darkColor="#1F2937">
+        <ThemedText style={styles.headerTitle}>
           Find Friends
         </ThemedText>
-        <ThemedText style={styles.headerSubtitle} lightColor="#6B7280" darkColor="#6B7280">
+        <ThemedText style={styles.headerSubtitle}>
           Connect with students like you
         </ThemedText>
       </View>
@@ -143,85 +135,87 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     paddingHorizontal: 24,
     paddingBottom: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
   },
   headerTitle: {
-    fontSize: 28,
-    fontWeight: '600',
+    fontSize: 32,
+    fontWeight: '300',
     marginBottom: 4,
+    letterSpacing: -0.5,
+    color: '#FFFFFF',
   },
   headerSubtitle: {
     fontSize: 14,
     fontWeight: '400',
+    color: '#888',
+    letterSpacing: 0.5,
   },
   listContent: {
     paddingHorizontal: 24,
     paddingBottom: 100,
+    paddingTop: 16,
   },
   studentCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-    borderRadius: 24,
+    backgroundColor: '#1A1A1A',
+    borderRadius: 16,
     padding: 20,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.06,
-    shadowRadius: 16,
-    elevation: 4,
+    borderColor: '#333',
+  },
+  headerRow: {
+    flexDirection: 'row',
+    marginBottom: 16,
   },
   avatarContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
-    alignSelf: 'center',
+    marginRight: 16,
   },
   avatarCircle: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#333',
   },
   avatarText: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: '600',
+    color: '#FFFFFF',
   },
   studentInfo: {
-    alignItems: 'center',
-    marginBottom: 16,
+    flex: 1,
+    justifyContent: 'center',
   },
   studentName: {
-    fontSize: 20,
-    fontWeight: '600',
-    marginBottom: 8,
+    fontSize: 18,
+    fontWeight: '500',
+    marginBottom: 2,
+    color: '#FFFFFF',
   },
-  countryRow: {
+  detailsRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
-  },
-  countryFlag: {
-    fontSize: 16,
-    marginRight: 6,
+    justifyContent: 'space-between',
   },
   countryText: {
     fontSize: 14,
+    color: '#888',
   },
   majorBadge: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 12,
-    backgroundColor: 'rgba(43, 107, 127, 0.1)',
+    borderRadius: 8,
+    backgroundColor: '#333',
     borderWidth: 1,
-    borderColor: 'rgba(43, 107, 127, 0.2)',
+    borderColor: '#444',
   },
   majorText: {
-    fontSize: 13,
-    fontWeight: '600',
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#CCCCCC',
   },
   hobbiesSection: {
     marginBottom: 16,
@@ -232,6 +226,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     marginBottom: 8,
+    color: '#888',
   },
   hobbiesGrid: {
     flexDirection: 'row',
@@ -241,32 +236,32 @@ const styles = StyleSheet.create({
   hobbyTag: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 12,
-    backgroundColor: 'rgba(107, 114, 128, 0.08)',
+    borderRadius: 8,
+    backgroundColor: '#333',
     borderWidth: 1,
-    borderColor: 'rgba(107, 114, 128, 0.15)',
+    borderColor: '#444',
   },
   hobbyText: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '500',
+    color: '#CCCCCC',
   },
   connectButton: {
-    borderRadius: 16,
-    overflow: 'hidden',
-  },
-  connectButtonInner: {
-    backgroundColor: 'rgba(217, 121, 65, 0.15)',
+    backgroundColor: '#333',
+    borderRadius: 12,
     paddingVertical: 14,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(217, 121, 65, 0.2)',
+    borderColor: '#444',
   },
   connectButtonConnected: {
-    backgroundColor: 'rgba(107, 165, 135, 0.15)',
-    borderColor: 'rgba(107, 165, 135, 0.2)',
+    backgroundColor: '#2A2A2A',
+    borderColor: '#404040',
   },
   connectButtonText: {
     fontSize: 15,
-    fontWeight: '600',
+    fontWeight: '500',
+    color: '#FFFFFF',
+    letterSpacing: 0.5,
   },
 });

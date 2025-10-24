@@ -33,7 +33,7 @@ export default function HomeScreen() {
 
   return (
     <LinearGradient
-      colors={['#F8F4FF', '#FFF5F2', '#F0FAFF']}
+      colors={['#0A0A0A', '#1A1A1A', '#0A0A0A']}
       style={styles.container}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}>
@@ -46,28 +46,15 @@ export default function HomeScreen() {
           }
         ]}>
         
-        {/* Glass Logo Container */}
-        <View style={styles.logoContainer}>
-          <View style={styles.glassCard}>
-            {/* Abstract Interwoven Circles */}
-            <View style={styles.logoDesign}>
-              <View style={[styles.circle, styles.circleTeal]} />
-              <View style={[styles.circle, styles.circleOrange]} />
-              <View style={[styles.circle, styles.circlePurple]} />
-              <View style={[styles.circle, styles.circleGreen]} />
-            </View>
-          </View>
-        </View>
-        
-        {/* Brand Name */}
+        {/* Brand Name Only - No Icon */}
         <View style={styles.brandContainer}>
-          <ThemedText style={styles.brandText} lightColor="#2B6B7F" darkColor="#2B6B7F">
+          <ThemedText style={styles.brandText}>
             BridgeMind
           </ThemedText>
         </View>
         
         {/* Tagline */}
-        <ThemedText style={styles.tagline} lightColor="#6B7280" darkColor="#6B7280">
+        <ThemedText style={styles.tagline}>
           Connecting cultures, healing hearts
         </ThemedText>
 
@@ -93,68 +80,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 40,
   },
-  logoContainer: {
-    marginBottom: 40,
-  },
-  glassCard: {
-    width: 140,
-    height: 140,
-    borderRadius: 32,
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.08,
-    shadowRadius: 24,
-    elevation: 8,
-  },
-  logoDesign: {
-    width: 80,
-    height: 80,
-    position: 'relative',
-  },
-  circle: {
-    position: 'absolute',
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    borderWidth: 3,
-  },
-  circleTeal: {
-    borderColor: '#2B6B7F',
-    top: 0,
-    left: 10,
-  },
-  circleOrange: {
-    borderColor: '#D97941',
-    top: 10,
-    right: 0,
-  },
-  circlePurple: {
-    borderColor: '#8B7BA8',
-    bottom: 10,
-    left: 0,
-  },
-  circleGreen: {
-    borderColor: '#6BA587',
-    bottom: 0,
-    right: 10,
-  },
   brandContainer: {
-    marginBottom: 8,
+    marginBottom: 16,
   },
   brandText: {
-    fontSize: 32,
-    fontWeight: '600',
-    letterSpacing: -0.5,
+    fontSize: 42,
+    fontWeight: '300',
+    letterSpacing: -1,
+    color: '#FFFFFF',
   },
   tagline: {
-    fontSize: 15,
+    fontSize: 16,
     textAlign: 'center',
     fontWeight: '400',
+    color: '#888',
+    letterSpacing: 0.5,
+    lineHeight: 24,
   },
   dotsContainer: {
     flexDirection: 'row',
@@ -162,12 +103,12 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: 'rgba(107, 114, 128, 0.3)',
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#333',
   },
   dotActive: {
-    backgroundColor: '#2B6B7F',
+    backgroundColor: '#666',
   },
 });
