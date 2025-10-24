@@ -33,7 +33,7 @@ export default function HomeScreen() {
 
   return (
     <LinearGradient
-      colors={['#FFE8DF', '#F5E8FF', '#E0F2F7']}
+      colors={['#F8F4FF', '#FFF5F2', '#F0FAFF']}
       style={styles.container}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}>

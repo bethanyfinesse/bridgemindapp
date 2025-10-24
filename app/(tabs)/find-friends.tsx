@@ -41,7 +41,7 @@ export default function FindFriendsScreen() {
         {/* Avatar */}
         <View style={[styles.avatarContainer, { backgroundColor: `${item.color}20` }]}>
           <View style={[styles.avatarCircle, { backgroundColor: item.color }]}>
-            <ThemedText style={styles.avatarText}>
+            <ThemedText style={styles.avatarText} lightColor="#fff" darkColor="#fff">
               {item.name.split(' ').map(n => n[0]).join('')}
             </ThemedText>
           </View>
@@ -54,7 +54,9 @@ export default function FindFriendsScreen() {
           </ThemedText>
           
           <View style={styles.countryRow}>
-            <ThemedText style={styles.countryFlag}>{item.country === 'China' ? '🇨🇳' : item.country === 'India' ? '🇮🇳' : item.country === 'Mexico' ? '🇲🇽' : '🌍'}</ThemedText>
+            <ThemedText style={styles.countryFlag}>
+              {item.country === 'China' ? '🇨🇳' : item.country === 'India' ? '🇮🇳' : item.country === 'Mexico' ? '🇲🇽' : '🌍'}
+            </ThemedText>
             <ThemedText style={styles.countryText} lightColor="#6B7280" darkColor="#6B7280">
               {item.country}
             </ThemedText>
@@ -106,7 +108,7 @@ export default function FindFriendsScreen() {
 
   return (
     <LinearGradient
-      colors={['#FFF5F2', '#F0FAFF', '#F8F4FF']}
+      colors={['#F8F4FF', '#FFF5F2', '#F0FAFF']}
       style={styles.container}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}>
@@ -187,7 +189,6 @@ const styles = StyleSheet.create({
   avatarText: {
     fontSize: 24,
     fontWeight: '600',
-    color: '#fff',
   },
   studentInfo: {
     alignItems: 'center',
