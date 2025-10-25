@@ -1,51 +1,46 @@
-# Welcome to your Bridge Mind app 👋
+# BridgeMind
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+BridgeMind is a mobile app built with React Native and Expo that connects international students with therapists and peers who share similar cultural backgrounds. The app promotes accessible, inclusive, and culturally aware mental health support.
 
-## Get started
+---
 
-1. Install dependencies
+## Inspiration
+Many international students face mental health challenges, cultural adjustment issues, and isolation while studying abroad. BridgeMind was created to offer a safe, understanding space for students to connect with professionals and peers who can truly relate.
 
+---
+
+## What It Does
+BridgeMind includes:
+- **Therapist Matching** – Connects students with culturally aware therapists who speak their language.  
+- **Peer Connections** – Enables students to meet others with similar backgrounds and shared experiences.  
+- **Anonymous Entries** – Provides a secure space to share thoughts and ask questions anonymously.  
+- **Personalized Onboarding** – Collects user details such as name, country, and language to tailor recommendations.  
+
+---
+
+## How We Built It
+- **Framework:** React Native with Expo  
+- **UI Styling:** Tailwind CSS for React Native and custom StyleSheet components  
+- **Navigation:** React Navigation for seamless screen transitions  
+- **Mock Data:** JSON placeholders for therapists, peers, and anonymous entries  
+- **Tools:** VS Code, GitHub, and Figma for interface design  
+
+---
+
+## How to Run the App Locally
+1. Clone the repository:
    ```bash
-   npm install
-   ```
+   git clone https://github.com/yourusername/BridgeMind.git
+   cd BridgeMind
+Install dependencies:
 
-2. Start the app
+bash
+Copy code
+npm install
+Start the Expo development server:
 
-   ```bash
-   npx expo start
-   ```
+bash
+Copy code
+npx expo start
+Scan the QR code using the Expo Go app on your mobile device to preview the app.
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
-# bridgemindapp
