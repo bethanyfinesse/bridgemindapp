@@ -50,3 +50,26 @@ Preview the app:
 Scan the QR code displayed in your terminal using the Expo Go app on your mobile device.
 
 The app will open instantly on your phone for live testing.
+
+## 🧠 How to Run the App Locally
+
+Follow these steps to set up and run **BridgeMind** on your local machine using Expo.
+
+---
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/yourusername/BridgeMind.git
+cd BridgeMind
+2. Install dependencies
+bash
+Copy code
+npm install
+3. Start the development server
+bash
+Copy code
+npx expo start
+4. Preview the app
+Scan the QR code displayed in your terminal using the Expo Go app on your mobile device.
+
+The app will open instantly for live testing and development.
