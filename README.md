@@ -34,13 +34,13 @@ BridgeMind includes:
    cd BridgeMind
 
 
-2.Install dependencies:
+2. Install dependencies:
    ```bash
 Copy code
 npm install
 
 
-3.Install dependencies:
+3. Install dependencies:
    ```bash
 Copy code
 npx expo start
