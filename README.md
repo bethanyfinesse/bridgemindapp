@@ -28,23 +28,25 @@ BridgeMind includes:
 ---
 
 ## How to Run the App Locally
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/BridgeMind.git
-   cd BridgeMind
+
+Clone the repository:
+
+git clone https://github.com/yourusername/BridgeMind.git
+cd BridgeMind
 
 
-2. Install dependencies:
-   ```bash
-Copy code
+Install dependencies:
+
 npm install
 
 
-3. Install dependencies:
-   ```bash
-Copy code
+Start the development server:
+
 npx expo start
 
 
-Scan the QR code using the Expo Go app on your mobile device to preview the app.
+Preview the app:
 
+Scan the QR code displayed in your terminal using the Expo Go app on your mobile device.
+
+The app will open instantly on your phone for live testing.
