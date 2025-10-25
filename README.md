@@ -32,14 +32,15 @@ BridgeMind includes:
    ```bash
    git clone https://github.com/yourusername/BridgeMind.git
    cd BridgeMind
-Install dependencies:
 
-bash
+
+2.Install dependencies:
+   ```bash
 Copy code
 npm install
-Start the Expo development server:
 
-bash
+3.Install dependencies:
+   ```bash
 Copy code
 npx expo start
 Scan the QR code using the Expo Go app on your mobile device to preview the app.
