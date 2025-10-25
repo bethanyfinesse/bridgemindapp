@@ -39,9 +39,12 @@ BridgeMind includes:
 Copy code
 npm install
 
+
 3.Install dependencies:
    ```bash
 Copy code
 npx expo start
+
+
 Scan the QR code using the Expo Go app on your mobile device to preview the app.
 
