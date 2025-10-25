@@ -1,6 +1,5 @@
 import { ThemedText } from '@/components/themed-text';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { FlatList, Modal, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
@@ -27,6 +26,17 @@ const approaches = [
   "CBT (Cognitive Behavioral)", "Psychodynamic", "Humanistic",
   "Mindfulness-Based", "Solution-Focused", "ACT", "Person-Centered"
 ];
+
+// Yellow color palette using #ffe46eff
+const COLORS = {
+  primary: '#ffe46eff',
+  primaryLight: '#f7e07bff',
+  primaryLighter: '#ffe678ff',
+  primaryDark: '#FCDC4D',
+  white:  '#ffe46eff',
+  pureWhite: '#916a6aff',
+  textOnYellow: '#FFFFFF', // White text for contrast on yellow backgrounds
+};
 
 interface PickerModalProps {
   visible: boolean;
@@ -111,11 +121,7 @@ export default function PreferencesScreen() {
   const isValid = prefs.language && prefs.country && prefs.struggles.length > 0;
 
   return (
-    <LinearGradient
-      colors={['#0A0A0A', '#1A1A1A', '#0A0A0A']}
-      style={styles.container}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}>
+    <View style={styles.container}>
       <ScrollView 
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}>
@@ -123,7 +129,7 @@ export default function PreferencesScreen() {
         {/* Header */}
         <View style={styles.header}>
           <ThemedText style={styles.headerTitle}>
-            Find Your Counselor
+            FIND YOUR COUNSELOR
           </ThemedText>
           <ThemedText style={styles.headerSubtitle}>
             Let's find the perfect match for you
@@ -260,7 +266,7 @@ export default function PreferencesScreen() {
             !isValid && styles.submitButtonDisabled
           ]}>
           <ThemedText style={styles.submitText}>
-            Find My Counselors →
+            FIND MY COUNSELORS →
           </ThemedText>
         </TouchableOpacity>
       </ScrollView>
@@ -290,141 +296,163 @@ export default function PreferencesScreen() {
         onSelect={(val) => setPrefs({...prefs, approach: val})}
         title="Select Therapy Approach"
       />
-    </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.primary,
   },
   scrollContent: {
-    padding: 24,
-    paddingTop: 60,
+    padding: 32,
+    paddingTop: 80,
     paddingBottom: 100,
   },
   header: {
-    marginBottom: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: '#333',
-    paddingBottom: 20,
+    marginBottom: 32,
+    paddingBottom: 24,
   },
   headerTitle: {
     fontSize: 32,
-    fontWeight: '300',
-    marginBottom: 4,
-    letterSpacing: -0.5,
-    color: '#FFFFFF',
+    fontWeight: '700',
+    marginBottom: 8,
+    letterSpacing: 1.5,
+    color: COLORS.textOnYellow,
+    textTransform: 'uppercase',
   },
   headerSubtitle: {
-    fontSize: 14,
-    fontWeight: '400',
-    color: '#888',
-    letterSpacing: 0.5,
+    fontSize: 16,
+    fontWeight: '600',
+    color: COLORS.textOnYellow,
+    letterSpacing: 0.8,
+    lineHeight: 22,
+    opacity: 0.9,
   },
   card: {
-    backgroundColor: '#1A1A1A',
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#333',
+    backgroundColor: COLORS.primaryLighter,
+    borderRadius: 28,
+    padding: 24,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 16,
+    elevation: 8,
   },
   label: {
-    fontSize: 15,
-    marginBottom: 12,
-    fontWeight: '600',
-    color: '#FFFFFF',
+    fontSize: 16,
+    marginBottom: 16,
+    fontWeight: '700',
+    color: COLORS.textOnYellow,
+    letterSpacing: 0.3,
   },
   selectButton: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#333',
-    borderRadius: 12,
+    borderWidth: 1.5,
+    borderColor: COLORS.white,
+    borderRadius: 16,
     padding: 16,
-    backgroundColor: '#1A1A1A',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
   },
   selectButtonText: {
     fontSize: 15,
-    color: '#FFFFFF',
+    fontWeight: '600',
+    color: COLORS.textOnYellow,
   },
   placeholderText: {
-    color: '#666',
+    color: COLORS.textOnYellow + '99',
   },
   dropdownIcon: {
-    color: '#666',
+    color: COLORS.textOnYellow,
     fontSize: 12,
+    fontWeight: '700',
   },
   tagsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 10,
+    gap: 12,
   },
   tag: {
     paddingHorizontal: 16,
     paddingVertical: 10,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#333',
-    backgroundColor: '#1A1A1A',
+    borderRadius: 12,
+    borderWidth: 1.5,
+    borderColor: COLORS.white,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
   },
   tagActive: {
-    backgroundColor: '#333',
-    borderColor: '#444',
+    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    borderColor: COLORS.white,
   },
   tagText: {
     fontSize: 13,
-    fontWeight: '500',
-    color: '#888',
+    fontWeight: '600',
+    color: COLORS.textOnYellow,
+    letterSpacing: 0.3,
   },
   tagTextActive: {
-    color: '#FFFFFF',
+    color: COLORS.textOnYellow,
+    fontWeight: '700',
   },
   buttonRow: {
     flexDirection: 'row',
-    gap: 10,
+    gap: 12,
   },
   button: {
     flex: 1,
     paddingVertical: 14,
-    borderRadius: 8,
+    borderRadius: 12,
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#333',
-    backgroundColor: '#1A1A1A',
+    borderWidth: 1.5,
+    borderColor: COLORS.white,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
   },
   buttonActive: {
-    backgroundColor: '#333',
-    borderColor: '#444',
+    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    borderColor: COLORS.white,
   },
   buttonText: {
     fontSize: 13,
-    fontWeight: '500',
-    color: '#888',
+    fontWeight: '600',
+    color: COLORS.textOnYellow,
+    letterSpacing: 0.3,
   },
   buttonTextActive: {
-    color: '#FFFFFF',
+    color: COLORS.textOnYellow,
+    fontWeight: '700',
   },
   submitButton: {
-    marginTop: 10,
+    marginTop: 20,
     marginBottom: 30,
     paddingVertical: 18,
-    borderRadius: 12,
+    borderRadius: 30,
     alignItems: 'center',
-    backgroundColor: '#333',
-    borderWidth: 1,
-    borderColor: '#444',
+    backgroundColor: COLORS.white,
+    shadowColor: COLORS.primaryDark,
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    elevation: 8,
   },
   submitButtonDisabled: {
     opacity: 0.4,
   },
   submitText: {
     fontSize: 16,
-    fontWeight: '500',
-    color: '#FFFFFF',
-    letterSpacing: 0.5,
+    fontWeight: '700',
+    color: COLORS.primaryDark,
+    letterSpacing: 1,
+    textTransform: 'uppercase',
   },
   modalBackdrop: {
     flex: 1,
@@ -432,30 +460,30 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   pickerModal: {
-    backgroundColor: '#1A1A1A',
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+    backgroundColor: COLORS.primaryLighter,
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
     maxHeight: '70%',
     borderWidth: 1,
-    borderColor: '#333',
+    borderColor: COLORS.white,
   },
   pickerHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 20,
+    padding: 24,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    borderBottomColor: COLORS.white,
   },
   pickerTitle: {
     fontSize: 18,
-    fontWeight: '500',
-    color: '#FFFFFF',
+    fontWeight: '700',
+    color: COLORS.textOnYellow,
   },
   pickerClose: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#FFFFFF',
+    fontWeight: '700',
+    color: COLORS.textOnYellow,
   },
   pickerOption: {
     flexDirection: 'row',
@@ -463,18 +491,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    borderBottomColor: 'rgba(255, 255, 255, 0.3)',
   },
   pickerOptionText: {
     fontSize: 16,
-    color: '#CCCCCC',
+    fontWeight: '600',
+    color: COLORS.textOnYellow,
   },
   pickerOptionSelected: {
-    fontWeight: '600',
-    color: '#FFFFFF',
+    fontWeight: '700',
+    color: COLORS.textOnYellow,
   },
   checkmark: {
-    color: '#FFFFFF',
-    fontWeight: '600',
+    color: COLORS.textOnYellow,
+    fontWeight: '700',
   },
 });

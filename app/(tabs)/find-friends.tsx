@@ -1,6 +1,5 @@
 import { ThemedText } from '@/components/themed-text';
 import { students } from '@/src/data/mockData';
-import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { Alert, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 
@@ -14,10 +13,21 @@ interface Student {
   color: string;
 }
 
+// Fresh green color palette using #C1F27B
+const COLORS = {
+  primary: '#C1F27B',
+  primaryLight: '#C1F27B',
+  primaryLighter: '#C1F27B',
+  primaryDark: '#C1F27B',
+  white: '#f0ffdbff',
+  pureWhite: '#7a3434ff',
+  textOnGreen: '#ffffffff', // Dark green text for contrast on light green backgrounds
+};
+
 export default function FindFriendsScreen() {
   const [connected, setConnected] = useState<string[]>([]);
 
-  const colors = ['#404040', '#606060', '#808080', '#A0A0A0'];
+  const colors = ['#93C248', '#A0D45A', '#B4E06C', '#C8F27B'];
 
   const mockStudents: Student[] = students.map((student, index) => ({
     ...student,
@@ -42,8 +52,8 @@ export default function FindFriendsScreen() {
         <View style={styles.headerRow}>
           {/* Avatar */}
           <View style={styles.avatarContainer}>
-            <View style={[styles.avatarCircle, { backgroundColor: item.color }]}>
-              <ThemedText style={styles.avatarText}>
+            <View style={styles.avatarCircle}>
+              <ThemedText style={[styles.avatarText, { color: item.color }]}>
                 {item.name.split(' ').map(n => n[0]).join('')}
               </ThemedText>
             </View>
@@ -72,7 +82,7 @@ export default function FindFriendsScreen() {
         {/* Hobbies */}
         <View style={styles.hobbiesSection}>
           <ThemedText style={styles.hobbiesLabel}>
-            Interests
+            INTERESTS
           </ThemedText>
           <View style={styles.hobbiesGrid}>
             {item.hobbies.map((hobby, idx) => (
@@ -91,7 +101,7 @@ export default function FindFriendsScreen() {
           style={[styles.connectButton, isConnected && styles.connectButtonConnected]}
           disabled={isConnected}>
           <ThemedText style={styles.connectButtonText}>
-            {isConnected ? '✓ Connected' : '+ Connect'}
+            {isConnected ? '✓ CONNECTED' : '+ CONNECT'}
           </ThemedText>
         </TouchableOpacity>
       </View>
@@ -99,16 +109,11 @@ export default function FindFriendsScreen() {
   };
 
   return (
-    <LinearGradient
-      colors={['#0A0A0A', '#1A1A1A', '#0A0A0A']}
-      style={styles.container}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}>
-      
+    <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <ThemedText style={styles.headerTitle}>
-          Find Friends
+          FIND FRIENDS
         </ThemedText>
         <ThemedText style={styles.headerSubtitle}>
           Connect with students like you
@@ -123,77 +128,88 @@ export default function FindFriendsScreen() {
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
       />
-    </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.primary,
   },
   header: {
-    paddingTop: 60,
-    paddingHorizontal: 24,
-    paddingBottom: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    paddingTop: 80,
+    paddingHorizontal: 32,
+    paddingBottom: 32,
   },
   headerTitle: {
     fontSize: 32,
-    fontWeight: '300',
-    marginBottom: 4,
-    letterSpacing: -0.5,
-    color: '#FFFFFF',
+    fontWeight: '700',
+    marginBottom: 8,
+    letterSpacing: 1.5,
+    color: COLORS.textOnGreen,
+    textTransform: 'uppercase',
   },
   headerSubtitle: {
-    fontSize: 14,
-    fontWeight: '400',
-    color: '#888',
-    letterSpacing: 0.5,
+    fontSize: 16,
+    fontWeight: '600',
+    color: COLORS.textOnGreen,
+    letterSpacing: 0.8,
+    lineHeight: 22,
+    opacity: 0.9,
   },
   listContent: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 32,
     paddingBottom: 100,
     paddingTop: 16,
   },
   studentCard: {
-    backgroundColor: '#1A1A1A',
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#333',
+    backgroundColor: COLORS.primaryLighter,
+    borderRadius: 28,
+    padding: 24,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 16,
+    elevation: 8,
   },
   headerRow: {
     flexDirection: 'row',
-    marginBottom: 16,
+    marginBottom: 20,
   },
   avatarContainer: {
-    marginRight: 16,
+    marginRight: 20,
   },
   avatarCircle: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: COLORS.white,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#333',
+    borderColor: COLORS.primaryDark,
   },
   avatarText: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#FFFFFF',
+    fontWeight: '800',
+    letterSpacing: 0.5,
+    // Color is set dynamically to match the student's color
   },
   studentInfo: {
     flex: 1,
     justifyContent: 'center',
   },
   studentName: {
-    fontSize: 18,
-    fontWeight: '500',
-    marginBottom: 2,
-    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: '700',
+    marginBottom: 8,
+    color: COLORS.textOnGreen,
+    letterSpacing: 0.3,
   },
   detailsRow: {
     flexDirection: 'row',
@@ -202,66 +218,78 @@ const styles = StyleSheet.create({
   },
   countryText: {
     fontSize: 14,
-    color: '#888',
+    fontWeight: '600',
+    color: COLORS.textOnGreen,
+    opacity: 0.9,
+    letterSpacing: 0.5,
   },
   majorBadge: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 8,
-    backgroundColor: '#333',
-    borderWidth: 1,
-    borderColor: '#444',
+    borderRadius: 12,
+    backgroundColor: '#d0f1a3ff', // Opaque white
+    borderWidth: 1.5,
+    borderColor: '#d0f1a3ff', 
   },
   majorText: {
     fontSize: 12,
-    fontWeight: '500',
-    color: '#CCCCCC',
+    fontWeight: '700',
+    color: COLORS.textOnGreen, // Dark green text
+    letterSpacing: 0.3,
   },
   hobbiesSection: {
-    marginBottom: 16,
+    marginBottom: 20,
   },
   hobbiesLabel: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: 11,
+    fontWeight: '800',
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginBottom: 8,
-    color: '#888',
+    letterSpacing: 1.2,
+    marginBottom: 12,
+    color: COLORS.textOnGreen,
+    opacity: 0.8,
   },
   hobbiesGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 10,
   },
   hobbyTag: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 8,
-    backgroundColor: '#333',
-    borderWidth: 1,
-    borderColor: '#444',
+    borderRadius: 12,
+    backgroundColor: '#d0f1a3ff',  // Opaque white
+    borderWidth: 1.5,
+    borderColor: '#d0f1a3ff', 
   },
   hobbyText: {
     fontSize: 12,
-    fontWeight: '500',
-    color: '#CCCCCC',
+    fontWeight: '600',
+    color: COLORS.textOnGreen, // Dark green text
+    letterSpacing: 0.3,
   },
   connectButton: {
-    backgroundColor: '#333',
-    borderRadius: 12,
-    paddingVertical: 14,
+    backgroundColor: COLORS.white,
+    borderRadius: 30,
+    paddingVertical: 16,
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#444',
+    shadowColor: COLORS.primaryDark,
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    elevation: 8,
   },
   connectButtonConnected: {
-    backgroundColor: '#2A2A2A',
-    borderColor: '#404040',
+    backgroundColor: COLORS.primaryLight,
   },
   connectButtonText: {
     fontSize: 15,
-    fontWeight: '500',
-    color: '#FFFFFF',
-    letterSpacing: 0.5,
+    fontWeight: '700',
+    color: COLORS.primaryDark,
+    letterSpacing: 1,
+    textTransform: 'uppercase',
   },
 });

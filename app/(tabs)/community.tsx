@@ -1,6 +1,5 @@
 import { ThemedText } from '@/components/themed-text';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from 'react';
 import { Alert, FlatList, KeyboardAvoidingView, Platform, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -13,6 +12,17 @@ interface Post {
   liked?: boolean;
 }
 
+// Warm orange-yellow color palette using #F4AD53
+const COLORS = {
+  primary: '#F4AD53',
+  primaryLight: '#F7C27D', // Lighter variant for cards
+  primaryLighter: '#F4AD53', // Even lighter for subtle contrast
+  primaryDark: '#f2a649ff',
+  white: '#FFFFFF',
+  pureWhite: '#FFFFFF',
+  textOnYellow: '#FFFFFF', // White text for contrast on yellow backgrounds
+};
+
 export default function CommunityScreen() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [newPost, setNewPost] = useState('');
@@ -23,10 +33,7 @@ export default function CommunityScreen() {
 
   const loadPosts = async () => {
     const stored = await AsyncStorage.getItem('communityPosts');
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      setPosts(parsed.map((p: any) => ({ ...p, timestamp: new Date(p.timestamp) })));
-    } else {
+    if (!stored) {
       const mockPosts: Post[] = [
         {
           id: '1',
@@ -52,6 +59,9 @@ export default function CommunityScreen() {
       ];
       setPosts(mockPosts);
       await AsyncStorage.setItem('communityPosts', JSON.stringify(mockPosts));
+    } else {
+      const parsed = JSON.parse(stored);
+      setPosts(parsed.map((p: any) => ({ ...p, timestamp: new Date(p.timestamp) })));
     }
   };
 
@@ -142,11 +152,7 @@ export default function CommunityScreen() {
   );
 
   return (
-    <LinearGradient
-      colors={['#0A0A0A', '#1A1A1A', '#0A0A0A']}
-      style={styles.container}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}>
+    <View style={styles.container}>
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -171,7 +177,7 @@ export default function CommunityScreen() {
             <TextInput
               style={styles.composerInput}
               placeholder="What's on your mind?"
-              placeholderTextColor="#666"
+              placeholderTextColor={COLORS.textOnYellow + '99'}
               value={newPost}
               onChangeText={setNewPost}
               multiline
@@ -196,139 +202,167 @@ export default function CommunityScreen() {
           showsVerticalScrollIndicator={false}
         />
       </KeyboardAvoidingView>
-    </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.primary, // Main background
   },
   header: {
-    paddingTop: 60,
-    paddingHorizontal: 24,
-    paddingBottom: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    paddingTop: 80,
+    paddingHorizontal: 32,
+    paddingBottom: 32,
+    backgroundColor: COLORS.primary,
   },
   headerTitle: {
     fontSize: 32,
-    fontWeight: '300',
-    marginBottom: 4,
+    fontWeight: '700',
+    marginBottom: 8,
     letterSpacing: -0.5,
-    color: '#FFFFFF',
+    color: COLORS.textOnYellow,
   },
   headerSubtitle: {
-    fontSize: 14,
-    fontWeight: '400',
-    color: '#888',
+    fontSize: 16,
+    fontWeight: '600',
+    color: COLORS.textOnYellow,
     letterSpacing: 0.5,
+    opacity: 0.9,
   },
   composerContainer: {
-    paddingHorizontal: 24,
-    paddingVertical: 20,
+    paddingHorizontal: 32,
+    paddingVertical: 24,
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    borderBottomColor: COLORS.primaryDark,
+    backgroundColor: COLORS.primary,
   },
   composer: {
-    backgroundColor: '#1A1A1A',
-    borderRadius: 16,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#333',
+    backgroundColor: COLORS.primaryLighter, // Lighter than background
+    borderRadius: 28,
+    padding: 20,
     flexDirection: 'row',
-    marginBottom: 16,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 6,
   },
   composerAvatar: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#333',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: COLORS.white,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: 16,
+    borderWidth: 2,
+    borderColor: COLORS.primaryDark,
   },
   composerCircle: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    backgroundColor: '#666',
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: COLORS.primaryDark,
   },
   composerInput: {
     flex: 1,
     fontSize: 16,
-    color: '#FFFFFF',
+    color: COLORS.textOnYellow,
     minHeight: 60,
     textAlignVertical: 'top',
+    fontWeight: '600',
   },
   postButton: {
-    backgroundColor: '#333',
-    borderRadius: 12,
-    paddingVertical: 14,
+    backgroundColor: COLORS.white,
+    borderRadius: 30,
+    paddingVertical: 16,
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#444',
+    shadowColor: COLORS.primaryDark,
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    elevation: 8,
   },
   postButtonDisabled: {
     opacity: 0.4,
   },
   postButtonText: {
     fontSize: 16,
-    fontWeight: '500',
-    color: '#FFFFFF',
+    fontWeight: '700',
+    color: COLORS.primaryDark,
     letterSpacing: 0.5,
   },
   feedContent: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 32,
     paddingBottom: 100,
     paddingTop: 16,
   },
   postCard: {
-    backgroundColor: '#1A1A1A',
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#333',
+    backgroundColor: COLORS.primaryLighter, // Lighter than background
+    borderRadius: 28,
+    padding: 24,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 16,
+    elevation: 8,
   },
   postHeader: {
     flexDirection: 'row',
-    marginBottom: 16,
+    marginBottom: 20,
     alignItems: 'center',
   },
   avatarContainer: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#333',
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: COLORS.white,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: 16,
+    borderWidth: 2,
+    borderColor: COLORS.primaryDark,
   },
   avatar: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    backgroundColor: '#666',
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: COLORS.primaryDark,
   },
   postInfo: {
     flex: 1,
   },
   postAuthor: {
-    fontSize: 15,
-    fontWeight: '500',
-    marginBottom: 2,
-    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
+    marginBottom: 4,
+    color: COLORS.textOnYellow,
   },
   postTime: {
-    fontSize: 13,
-    color: '#888',
+    fontSize: 14,
+    fontWeight: '600',
+    color: COLORS.textOnYellow,
+    opacity: 0.9,
   },
   postContent: {
-    fontSize: 16,
-    lineHeight: 24,
-    marginBottom: 16,
-    color: '#E0E0E0',
+    fontSize: 17,
+    fontWeight: '600',
+    lineHeight: 26,
+    marginBottom: 20,
+    color: COLORS.textOnYellow,
     letterSpacing: 0.3,
   },
   postActions: {
@@ -338,30 +372,35 @@ const styles = StyleSheet.create({
   actionButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 12,
   },
   iconContainer: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#333',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: COLORS.primaryLight,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 2,
+    borderColor: COLORS.white,
   },
   likedIcon: {
-    backgroundColor: '#444',
+    backgroundColor: COLORS.primaryDark,
   },
   actionIcon: {
-    fontSize: 14,
-    color: '#888',
+    fontSize: 16,
+    fontWeight: '700',
+    color: COLORS.textOnYellow,
   },
   actionText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#888',
+    fontSize: 15,
+    fontWeight: '700',
+    color: COLORS.textOnYellow,
     minWidth: 20,
+    opacity: 0.9,
   },
   likedText: {
-    color: '#FFFFFF',
+    color: COLORS.textOnYellow,
+    opacity: 1,
   },
 });

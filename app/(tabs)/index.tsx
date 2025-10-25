@@ -1,5 +1,4 @@
 import { ThemedText } from '@/components/themed-text';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import React, { useEffect } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
@@ -7,36 +6,45 @@ import { Animated, StyleSheet, View } from 'react-native';
 export default function HomeScreen() {
   const router = useRouter();
   const fadeAnim = new Animated.Value(0);
-  const scaleAnim = new Animated.Value(0.9);
+  const scaleAnim = new Animated.Value(0.8);
 
   useEffect(() => {
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 1000,
+        duration: 1200,
         useNativeDriver: true,
       }),
       Animated.spring(scaleAnim, {
         toValue: 1,
-        tension: 50,
-        friction: 7,
+        tension: 60,
+        friction: 8,
         useNativeDriver: true,
       }),
     ]).start();
 
     const timer = setTimeout(() => {
       router.push('/(tabs)/preferences');
-    }, 2500);
+    }, 1800);
 
     return () => clearTimeout(timer);
   }, []);
 
+  const letters = [
+    { char: 'B', color: '#F7C27D' }, // Orange
+    { char: 'R', color: '#C1F27B' }, // Green
+    { char: 'I', color: '#BAD7F2' }, // Blue
+    { char: 'D', color: '#ffe46eff' }, // Yellow
+    { char: 'G', color: '#F7C27D' }, // Orange
+    { char: 'E', color: '#C1F27B' }, // Green
+    { char: 'M', color: '#BAD7F2' }, // Blue
+    { char: 'I', color: '#ffe46eff' }, // Yellow
+    { char: 'N', color: '#F7C27D' }, // Orange
+    { char: 'D', color: '#C1F27B' }, // Green
+  ];
+
   return (
-    <LinearGradient
-      colors={['#0A0A0A', '#1A1A1A', '#0A0A0A']}
-      style={styles.container}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}>
+    <View style={styles.container}>
       <Animated.View 
         style={[
           styles.content, 
@@ -46,69 +54,43 @@ export default function HomeScreen() {
           }
         ]}>
         
-        {/* Brand Name Only - No Icon */}
-        <View style={styles.brandContainer}>
-          <ThemedText style={styles.brandText}>
-            BridgeMind
-          </ThemedText>
-        </View>
-        
-        {/* Tagline */}
-        <ThemedText style={styles.tagline}>
-          Connecting cultures, healing hearts
-        </ThemedText>
-
-        {/* Loading Dots */}
-        <View style={styles.dotsContainer}>
-          <View style={[styles.dot, styles.dotActive]} />
-          <View style={styles.dot} />
-          <View style={styles.dot} />
-          <View style={styles.dot} />
+        {/* Colored Letters */}
+        <View style={styles.lettersContainer}>
+          {letters.map((letter, index) => (
+            <ThemedText 
+              key={index}
+              style={[
+                styles.letter,
+                { color: letter.color }
+              ]}
+            >
+              {letter.char}
+            </ThemedText>
+          ))}
         </View>
       </Animated.View>
-    </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFFFFF',
   },
   content: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 40,
   },
-  brandContainer: {
-    marginBottom: 16,
-  },
-  brandText: {
-    fontSize: 42,
-    fontWeight: '300',
-    letterSpacing: -1,
-    color: '#FFFFFF',
-  },
-  tagline: {
-    fontSize: 16,
-    textAlign: 'center',
-    fontWeight: '400',
-    color: '#888',
-    letterSpacing: 0.5,
-    lineHeight: 24,
-  },
-  dotsContainer: {
+  lettersContainer: {
     flexDirection: 'row',
-    marginTop: 40,
-    gap: 8,
+    alignItems: 'center',
   },
-  dot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: '#333',
-  },
-  dotActive: {
-    backgroundColor: '#666',
+  letter: {
+    fontSize: 48,
+    fontWeight: '800',
+    letterSpacing: 2,
+    textTransform: 'uppercase',
   },
 });

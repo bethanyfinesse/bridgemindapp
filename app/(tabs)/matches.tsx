@@ -48,6 +48,16 @@ const extraSpecialties = [
   'Grief'
 ];
 
+// Monochrome color palette using #BAD7F2
+const COLORS = {
+  primary: '#BAD7F2',
+  primaryLight: '#A8CDF0',
+  primaryDark: '#8FBDE8',
+  white: '#FFFFFF',
+  pureWhite: '#FFFFFF',
+  textOnBlue: '#FFFFFF', // White text for better contrast on blue backgrounds
+};
+
 export default function MatchesScreen() {
   const [matches, setMatches] = useState<Counselor[]>([]);
 
@@ -82,6 +92,7 @@ export default function MatchesScreen() {
 
   const renderCounselor = ({ item }: { item: Counselor }) => (
     <View style={styles.card}>
+      {/* Header with avatar and basic info */}
       <View style={styles.counselorHeader}>
         <View style={styles.avatarContainer}>
           <View style={styles.avatarCircle}>
@@ -100,18 +111,22 @@ export default function MatchesScreen() {
         </View>
       </View>
 
+      {/* Rating and sessions */}
       <View style={styles.ratingRow}>
-        <ThemedText style={styles.rating}>
-          ★ {item.rating}
-        </ThemedText>
+        <View style={styles.ratingContainer}>
+          <ThemedText style={styles.rating}>
+            ★ {item.rating}
+          </ThemedText>
+        </View>
         <ThemedText style={styles.sessions}>
           {item.sessions} sessions
         </ThemedText>
       </View>
 
+      {/* Languages */}
       <View style={styles.section}>
         <ThemedText style={styles.sectionTitle}>
-          Languages
+          LANGUAGES
         </ThemedText>
         <View style={styles.tags}>
           {item.languages.map((lang) => (
@@ -124,9 +139,10 @@ export default function MatchesScreen() {
         </View>
       </View>
 
+      {/* Specialties */}
       <View style={styles.section}>
         <ThemedText style={styles.sectionTitle}>
-          Specialties
+          SPECIALTIES
         </ThemedText>
         <View style={styles.tags}>
           {item.specialties.map((spec) => (
@@ -139,18 +155,20 @@ export default function MatchesScreen() {
         </View>
       </View>
 
+      {/* Approach */}
       <View style={styles.section}>
         <ThemedText style={styles.sectionTitle}>
-          Approach
+          APPROACH
         </ThemedText>
         <ThemedText style={styles.approachText}>
           {item.approach}
         </ThemedText>
       </View>
 
+      {/* Book Button - ONLY WHITE ELEMENT */}
       <TouchableOpacity style={styles.button}>
         <ThemedText style={styles.buttonText}>
-          Book Session →
+          BOOK SESSION →
         </ThemedText>
       </TouchableOpacity>
     </View>
@@ -158,20 +176,22 @@ export default function MatchesScreen() {
 
   return (
     <LinearGradient
-      colors={['#0A0A0A', '#1A1A1A', '#0A0A0A']}
+      colors={[COLORS.primary, COLORS.primaryLight, COLORS.primary]}
       style={styles.container}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}>
       
+      {/* Header */}
       <View style={styles.header}>
         <ThemedText style={styles.headerTitle}>
-          My Matches
+          MY MATCHES
         </ThemedText>
         <ThemedText style={styles.headerSubtitle}>
           Counselors matched to your preferences
         </ThemedText>
       </View>
 
+      {/* Content */}
       {matches.length > 0 ? (
         <FlatList
           data={matches}
@@ -193,106 +213,132 @@ export default function MatchesScreen() {
 
 const styles = StyleSheet.create({
   container: { 
-    flex: 1 
+    flex: 1,
   },
   header: {
-    paddingTop: 60,
-    paddingHorizontal: 24,
-    paddingBottom: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: '#333',
+    paddingTop: 80,
+    paddingHorizontal: 32,
+    paddingBottom: 32,
   },
   headerTitle: {
     fontSize: 32,
-    fontWeight: '300',
-    marginBottom: 4,
-    letterSpacing: -0.5,
-    color: '#FFFFFF',
+    fontWeight: '800',
+    marginBottom: 8,
+    letterSpacing: 1.5,
+    color: COLORS.textOnBlue,
+    textTransform: 'uppercase',
   },
   headerSubtitle: {
-    fontSize: 14,
-    fontWeight: '400',
-    color: '#888',
-    letterSpacing: 0.5,
+    fontSize: 16,
+    fontWeight: '500',
+    color: COLORS.textOnBlue,
+    letterSpacing: 0.8,
+    lineHeight: 22,
+    opacity: 0.9,
   },
   listContent: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 32,
     paddingBottom: 100,
     paddingTop: 16,
   },
   card: {
-    backgroundColor: '#1A1A1A',
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#333',
+    backgroundColor: COLORS.primaryLight,
+    borderRadius: 28, // Increased to match the soft pill-like aesthetic (from 20)
+    padding: 24,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 16,
+    elevation: 8,
   },
   counselorHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 16,
   },
   avatarContainer: {
-    marginRight: 16,
+    marginRight: 20,
   },
   avatarCircle: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#404040',
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: COLORS.white, // White background
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#333',
+    borderColor: COLORS.primary, // Blue stroke
   },
   avatarText: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#FFFFFF',
+    fontWeight: '800',
+    color: COLORS.primary, // Blue text
+    letterSpacing: 0.5,
   },
   counselorInfo: {
     flex: 1,
   },
   name: { 
-    fontSize: 18, 
-    fontWeight: '500', 
-    marginBottom: 2,
-    color: '#FFFFFF',
+    fontSize: 20, 
+    fontWeight: '700', 
+    marginBottom: 4,
+    color: COLORS.textOnBlue,
+    letterSpacing: 0.3,
   },
   country: { 
     fontSize: 14,
-    color: '#888',
+    fontWeight: '500',
+    color: COLORS.textOnBlue,
+    opacity: 0.9,
+    letterSpacing: 0.5,
   },
   ratingRow: {
     flexDirection: 'row',
+    alignItems: 'center',
     gap: 16,
-    marginBottom: 16,
+    marginBottom: 20,
+  },
+  ratingContainer: {
+    backgroundColor: COLORS.primary,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16, // Increased to match the soft theme (from 12)
   },
   rating: { 
     fontSize: 14,
-    fontWeight: '500',
-    color: '#CCCCCC',
+    fontWeight: '700',
+    color: COLORS.textOnBlue,
+    letterSpacing: 0.5,
   },
   sessions: {
     fontSize: 14,
-    color: '#888',
+    fontWeight: '600',
+    color: COLORS.textOnBlue,
+    opacity: 0.9,
+    letterSpacing: 0.5,
   },
   section: { 
-    marginBottom: 16,
+    marginBottom: 20,
   },
   sectionTitle: { 
-    fontSize: 12, 
-    fontWeight: '600',
+    fontSize: 11, 
+    fontWeight: '800',
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginBottom: 8,
-    color: '#888',
+    letterSpacing: 1.2,
+    marginBottom: 12,
+    color: COLORS.textOnBlue,
+    opacity: 0.8,
   },
   approachText: {
-    fontSize: 14,
-    lineHeight: 20,
-    color: '#CCCCCC',
+    fontSize: 15,
+    lineHeight: 22,
+    color: COLORS.textOnBlue,
+    fontWeight: '500',
+    letterSpacing: 0.3,
   },
   tags: { 
     flexDirection: 'row', 
@@ -300,43 +346,51 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   tag: {
-    backgroundColor: '#333',
+    backgroundColor: COLORS.primary,
     paddingVertical: 6,
     paddingHorizontal: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#444',
+    borderRadius: 16, // Increased to match the soft theme (from 12)
   },
   tagText: { 
     fontSize: 12, 
-    fontWeight: '500',
-    color: '#CCCCCC',
+    fontWeight: '600',
+    color: COLORS.textOnBlue,
+    letterSpacing: 0.3,
   },
   button: {
     marginTop: 8,
-    backgroundColor: '#333',
-    paddingVertical: 14,
-    borderRadius: 12,
+    backgroundColor: COLORS.white, // ONLY WHITE BACKGROUND
+    paddingVertical: 16,
+    borderRadius: 30, // Maximum border radius - very rounded pill shape
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#444',
+    shadowColor: COLORS.primaryDark, // Blue shadow color
+    shadowOffset: {
+      width: 0,
+      height: 6, // Slightly larger shadow offset
+    },
+    shadowOpacity: 0.25, // Increased shadow opacity
+    shadowRadius: 12, // Increased shadow blur
+    elevation: 8, // Increased elevation for Android
   },
   buttonText: { 
     fontSize: 15, 
-    fontWeight: '500',
-    color: '#FFFFFF',
-    letterSpacing: 0.5,
+    fontWeight: '700',
+    color: COLORS.primary, // Primary color text on white button
+    letterSpacing: 1,
+    textTransform: 'uppercase',
   },
   emptyState: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 40,
+    paddingHorizontal: 48,
   },
   emptyText: {
     textAlign: 'center',
     fontSize: 16,
     lineHeight: 24,
-    color: '#888',
+    color: COLORS.textOnBlue,
+    fontWeight: '500',
+    letterSpacing: 0.5,
   },
 });
