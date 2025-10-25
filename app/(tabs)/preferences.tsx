@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 32,
-    fontWeight: '700',
+    fontWeight: '900',
     marginBottom: 8,
     letterSpacing: 1.5,
     color: COLORS.textOnYellow,
